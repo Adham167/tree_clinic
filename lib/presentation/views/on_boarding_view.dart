@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tree_clinic/core/constants/assets.dart';
 import 'package:tree_clinic/core/widgets/custom_floating_button.dart';
 import 'package:tree_clinic/presentation/models/on_boarding_model.dart';
+import 'package:tree_clinic/presentation/widget/onboarding_controllar.dart';
 import 'package:tree_clinic/presentation/widget/onboarding_page_view_widget.dart';
 
 class OnBoardingView extends StatelessWidget {
-   OnBoardingView({super.key});
+  OnBoardingView({super.key});
 
   List<OnBoardingModel> onboardingList = [
     OnBoardingModel(
@@ -34,7 +35,12 @@ class OnBoardingView extends StatelessWidget {
       floatingActionButton: CustomFloatingButton(),
       body: Column(
         children: [
-          OnboardingPageViewWidget(onboardingList: onboardingList),
+          SizedBox(height: 100),
+          OnboardingControllar(onboardingList: onboardingList),
+          SizedBox(height: 28),
+          Expanded(
+            child: OnboardingPageViewWidget(onboardingList: onboardingList),
+          ),
         ],
       ),
     );
