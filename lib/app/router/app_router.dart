@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tree_clinic/features/auth/presentation/views/signin_view.dart';
 import 'package:tree_clinic/presentation/views/home_view.dart';
 import 'package:tree_clinic/presentation/views/get_on_boarding_view.dart';
 import 'package:tree_clinic/presentation/views/on_boarding_view.dart';
@@ -8,6 +9,7 @@ abstract class AppRouter {
   static const kGetOnBoardingView = '/GetOnBoardingView';
   static const kHomeView = '/HomeView';
   static const kOnBoardingView = '/OnBoardingView';
+  static const kSigninView = '/SigninView';
 
   static final router = GoRouter(
     routes: [
@@ -18,6 +20,7 @@ abstract class AppRouter {
       ),
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
       GoRoute(path: kOnBoardingView, builder: (context, state) =>  OnBoardingView()),
+      GoRoute(path: kSigninView, builder: (context, state) =>  SigninView()),
     ],
   );
 }

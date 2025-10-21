@@ -13,7 +13,7 @@ class GetOnBoardingView extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(Assets.imagesImfg1, fit: BoxFit.cover),
+          Image.asset("assets/images/imfg_1.jpg", fit: BoxFit.cover),
 
           Container(color: Colors.white.withOpacity(0.35)),
 
