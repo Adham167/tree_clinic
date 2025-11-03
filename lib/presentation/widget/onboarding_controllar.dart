@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tree_clinic/presentation/models/on_boarding_model.dart';
 
 class OnboardingControllar extends StatelessWidget {

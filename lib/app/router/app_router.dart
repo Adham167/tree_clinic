@@ -1,7 +1,10 @@
 import 'package:go_router/go_router.dart';
-import 'package:tree_clinic/features/auth/presentation/views/signin_view.dart';
+import 'package:tree_clinic/features/auth/presentation/views/forget_password.dart';
+import 'package:tree_clinic/features/auth/presentation/views/new_password.dart';
+import 'package:tree_clinic/features/auth/presentation/views/register_view.dart';
+import 'package:tree_clinic/features/auth/presentation/views/success_reset_password.dart';
+import 'package:tree_clinic/features/auth/presentation/views/sucess_sign_up.dart';
 import 'package:tree_clinic/presentation/views/home_view.dart';
-import 'package:tree_clinic/presentation/views/get_on_boarding_view.dart';
 import 'package:tree_clinic/presentation/views/on_boarding_view.dart';
 import 'package:tree_clinic/presentation/views/splash_view.dart';
 
@@ -9,18 +12,23 @@ abstract class AppRouter {
   static const kGetOnBoardingView = '/GetOnBoardingView';
   static const kHomeView = '/HomeView';
   static const kOnBoardingView = '/OnBoardingView';
-  static const kSigninView = '/SigninView';
+  static const kRegisterView = '/RegisterView';
+  static const kForgotPassword = '/ForgotPassword';
+  static const kNewPasswordView = '/NewPasswordView';
+  static const kSuccessResetPassword = '/SuccessResetPassword';
+  static const kSucessSignUp = '/SucessSignUp';
 
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
-      GoRoute(
-        path: kGetOnBoardingView,
-        builder: (context, state) => const GetOnBoardingView(),
-      ),
+      
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
       GoRoute(path: kOnBoardingView, builder: (context, state) =>  OnBoardingView()),
-      GoRoute(path: kSigninView, builder: (context, state) =>  SigninView()),
+      GoRoute(path: kRegisterView, builder: (context, state) =>  RegisterView()),
+      GoRoute(path: kForgotPassword, builder: (context, state) =>  ForgotPassword()),
+      GoRoute(path: kNewPasswordView, builder: (context, state) =>  NewPasswordView()),
+      GoRoute(path: kSuccessResetPassword, builder: (context, state) =>  SuccessResetPassword()),
+      GoRoute(path: kSucessSignUp, builder: (context, state) =>  SucessSignUp()),
     ],
   );
 }

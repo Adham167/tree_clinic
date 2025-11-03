@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
 abstract class AppStyles {
-  static const styleLight10 = TextStyle(
-    color: Colors.black,
-    fontSize: 10,
-    fontFamily: "Plus Jakarta Sans",
-    fontWeight: FontWeight.w300,
-  );
   /////////////////////////////////////////////////
 
   static const styleRegular12 = TextStyle(
@@ -183,7 +177,7 @@ abstract class AppStyles {
     fontWeight: FontWeight.w700,
   );
   static const styleBold36 = TextStyle(
-    color: Color(0xFFFFFFFF),
+    color: Color(0xFF000000),
     fontSize: 36,
     fontFamily: "Plus Jakarta Sans",
     fontWeight: FontWeight.w700,

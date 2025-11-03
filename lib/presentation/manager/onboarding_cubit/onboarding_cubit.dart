@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meta/meta.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/presentation/models/on_boarding_model.dart';
 
@@ -29,7 +28,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       );
       emit(OnboardingPageChanged(currentPage));
     } else {
-      GoRouter.of(context).pushReplacement(AppRouter.kSigninView);
+      GoRouter.of(context).pushReplacement(AppRouter.kRegisterView);
       emit(OnboardingFinished());
     }
   }

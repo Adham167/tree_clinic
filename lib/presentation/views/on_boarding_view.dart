@@ -51,6 +51,7 @@ class OnBoardingView extends StatelessWidget {
         ),
         body: Column(
           children: [
+            SizedBox(height: 100),
             BlocBuilder<OnboardingCubit, OnboardingState>(
               builder: (context, state) {
                 return OnboardingControllar(

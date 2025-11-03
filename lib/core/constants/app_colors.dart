@@ -8,4 +8,8 @@ class AppColors {
   static const Color lightTextPrimary = Colors.black87;
   static const Color lightTextSecondary = Color(0xFF6E6E6E);
   static const Color lightHint = Color(0xFF9E9E9E);
+  static const Color kPrimaryColor = Colors.white;
+  static const Color kmainColor = Colors.green;
+  static const Color kseconderyColor = Colors.grey;
+
 }
