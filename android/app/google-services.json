@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054021400249",
+    "project_id": "final-2004",
+    "storage_bucket": "final-2004.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054021400249:android:fcf748960e5aeb99bdcd68",
+        "android_client_info": {
+          "package_name": "com.example.tree_clinic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6ZiR8QMDjHoaCgVSdsi_oLCIR9pbL3uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
