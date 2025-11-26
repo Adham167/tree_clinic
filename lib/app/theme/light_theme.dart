@@ -52,7 +52,7 @@ class LightTheme {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.lightPrimary,
+        backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
