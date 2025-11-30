@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tree_clinic/features/auth/data/model/user_model.dart';
 import 'package:tree_clinic/features/auth/data/model/user_signIn_model.dart';
 import 'package:tree_clinic/features/auth/domain/repo/autn_firebase_service.dart';
@@ -12,8 +11,8 @@ class AuthFirebaseServiceImpl extends AutnFirebaseService {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: user.email,
-            password: user.password,
+            email: user.email!,
+            password: user.password!,
           );
 
       FirebaseFirestore.instance
@@ -63,3 +62,22 @@ class AuthFirebaseServiceImpl extends AutnFirebaseService {
     throw UnimplementedError();
   }
 }
+
+//   Future<UserCredential> signInWithGoogle() async {
+//     // Trigger the authentication flow
+//     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+//     // Obtain the auth details from the request
+//     final GoogleSignInAuthentication? googleAuth =
+//         await googleUser?.authentication;
+
+//     // Create a new credential
+//     final credential = GoogleAuthProvider.credential(
+//       accessToken: googleAuth?.accessToken,
+//       idToken: googleAuth?.idToken,
+//     );
+
+//     // Once signed in, return the UserCredential
+//     return await FirebaseAuth.instance.signInWithCredential(credential);
+//   }
+// }

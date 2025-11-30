@@ -13,7 +13,7 @@ class NewPasswordView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
-      appBar:CustomAppBar(height: 120,),
+      appBar: CustomAppBar(height: 120),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
@@ -30,12 +30,12 @@ class NewPasswordView extends StatelessWidget {
             Text("Password", style: AppStyles.styleRegular16),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: CustomTextField(hint: "Password"),
+              child: CustomFormTextField(label: "Password",),
             ),
             Text("Confirm Password", style: AppStyles.styleRegular16),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: CustomTextField(hint: "Confirm Password"),
+              child: CustomFormTextField(label: "Confirm Password"),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),

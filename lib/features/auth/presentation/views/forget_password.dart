@@ -29,7 +29,7 @@ class ForgotPassword extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: CustomTextField(hint: "Your Email"),
+              child: CustomFormTextField(label: "Your Email"),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
