@@ -20,7 +20,7 @@ class SplashView extends StatelessWidget {
             if (state is UnAuthenticated) {
               GoRouter.of(context).push(AppRouter.kOnBoardingView);
             } else if (state is Authenticated) {
-              GoRouter.of(context).push(AppRouter.kHomeView);
+              GoRouter.of(context).push(AppRouter.kMainNavigation);
             }
           },
           child: Stack(

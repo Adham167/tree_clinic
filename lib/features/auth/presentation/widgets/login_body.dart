@@ -32,7 +32,7 @@ class _LoginBodyState extends State<LoginBody> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.errMessage)));
         } else if (state is ButtonSuccess) {
-          GoRouter.of(context).push(AppRouter.kHomeView);
+          GoRouter.of(context).pushReplacement(AppRouter.kMainNavigation);
         }
       },
       child: BlocBuilder<SigninValidationCubit, SigninValidationState>(
