@@ -21,9 +21,8 @@ class _RegisterViewState extends State<RegisterView> {
       providers: [
         BlocProvider(create: (context) => ButtonCubit()),
         BlocProvider(create: (context) => SignupValidationCubit()),
-        BlocProvider(create: (context) => SigninValidationCubit())
-        
-        ],
+        BlocProvider(create: (context) => SigninValidationCubit()),
+      ],
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -41,7 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           body: Container(
             padding: EdgeInsets.all(10),
-            child: TabBarView(children: [LoginBody(), SignUpBody()]),
+            child: TabBarView(children: [LoginView(), SignUpBody()]),
           ),
         ),
       ),

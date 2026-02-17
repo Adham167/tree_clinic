@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main_navigation.dart';
-import 'cart_page.dart';
+import '../features/cart/presentation/cart_page.dart';
 
 class ShopPage extends StatelessWidget {
   final products = [];

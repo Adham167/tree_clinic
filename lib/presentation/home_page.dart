@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tree_clinic/features/prediction/presentation/manager/cubit/prediction_cubit.dart';
 import 'loading_page.dart';
-import 'dashboard_page.dart';
+import '../features/dashboard/presentation/dashboard_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

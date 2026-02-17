@@ -28,7 +28,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       );
       emit(OnboardingPageChanged(currentPage));
     } else {
-      GoRouter.of(context).pushReplacement(AppRouter.kRegisterView);
+      GoRouter.of(context).push(AppRouter.kAuthCoice);
       emit(OnboardingFinished());
     }
   }

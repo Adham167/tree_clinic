@@ -9,7 +9,13 @@ class CustomFloatingButton extends StatelessWidget {
       onPressed: ontap,
       shape: CircleBorder(),
       backgroundColor: Colors.green,
-      child: Icon(Icons.arrow_forward),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 10.0),
+        child: Transform.rotate(
+          angle: 3.1415,
+          child: Icon(Icons.arrow_back_ios, size: 24, color: Colors.black),
+        ),
+      ),
     );
   }
 }

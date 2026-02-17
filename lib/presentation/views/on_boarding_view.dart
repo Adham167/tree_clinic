@@ -5,30 +5,27 @@ import 'package:tree_clinic/core/constants/assets.dart';
 import 'package:tree_clinic/core/widgets/custom_floating_button.dart';
 import 'package:tree_clinic/presentation/manager/onboarding_cubit/onboarding_cubit.dart';
 import 'package:tree_clinic/presentation/models/on_boarding_model.dart';
-import 'package:tree_clinic/presentation/widget/onboarding_controllar.dart';
 import 'package:tree_clinic/presentation/widget/onboarding_page_view_widget.dart';
 
 class OnBoardingView extends StatelessWidget {
-  OnBoardingView({super.key});
+  const OnBoardingView({super.key});
 
-  List<OnBoardingModel> onboardingList = [
+  final List<OnBoardingModel> onboardingList = const [
     OnBoardingModel(
       image: Assets.imagesOnboarding1,
-      title: "Healthy plants",
+      title: "Smart Agriculture",
       description:
-          "Taking care of plants can be very rewarding, even if the plant is a fern and doesn’t produce fragrant flowers...",
+          "Modern solutions to manage crops and improve productivity easily.",
     ),
     OnBoardingModel(
       image: Assets.imagesOnboarding2,
-      title: "Healthy plants",
-      description:
-          "Taking care of plants can be very rewarding, even if the plant is a fern and doesn’t produce fragrant flowers...",
+      title: "Crop Monitoring",
+      description: "Track growth and soil condition with advanced technology.",
     ),
     OnBoardingModel(
       image: Assets.imagesOnboarding3,
-      title: "Healthy plants",
-      description:
-          "Taking care of plants can be very rewarding, even if the plant is a fern and doesn’t produce fragrant flowers...",
+      title: "Harvest Efficiently",
+      description: "Organize harvest schedules and maximize farm output.",
     ),
   ];
 
@@ -51,17 +48,6 @@ class OnBoardingView extends StatelessWidget {
         ),
         body: Column(
           children: [
-            SizedBox(height: 50),
-            BlocBuilder<OnboardingCubit, OnboardingState>(
-              builder: (context, state) {
-                return OnboardingControllar(
-                  currentIndex:
-                      BlocProvider.of<OnboardingCubit>(context).currentPage,
-                  onboardingList: onboardingList,
-                );
-              },
-            ),
-            SizedBox(height: 28),
             Expanded(
               child: OnboardingPageViewWidget(
                 pageController: pageController,

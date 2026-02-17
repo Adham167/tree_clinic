@@ -1,19 +1,21 @@
 import 'package:go_router/go_router.dart';
+import 'package:tree_clinic/features/auth/presentation/views/auth_choice_view.dart';
 import 'package:tree_clinic/features/auth/presentation/views/forget_password.dart';
 import 'package:tree_clinic/features/auth/presentation/views/new_password.dart';
 import 'package:tree_clinic/features/auth/presentation/views/register_view.dart';
 import 'package:tree_clinic/features/auth/presentation/views/success_reset_password.dart';
 import 'package:tree_clinic/features/auth/presentation/views/sucess_sign_up.dart';
-import 'package:tree_clinic/lib/main_navigation.dart';
+import 'package:tree_clinic/features/auth/presentation/widgets/login_body.dart';
+import 'package:tree_clinic/presentation/main_navigation.dart';
 import 'package:tree_clinic/presentation/views/home_view.dart';
 import 'package:tree_clinic/presentation/views/on_boarding_view.dart';
-import 'package:tree_clinic/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
   static const kGetOnBoardingView = '/GetOnBoardingView';
   static const kHomeView = '/HomeView';
-  static const kOnBoardingView = '/OnBoardingView';
+  static const kAuthCoice = '/AuthCoice';
   static const kRegisterView = '/RegisterView';
+  static const kLoginView = '/LoginView';
   static const kForgotPassword = '/ForgotPassword';
   static const kNewPasswordView = '/NewPasswordView';
   static const kSuccessResetPassword = '/SuccessResetPassword';
@@ -22,17 +24,17 @@ abstract class AppRouter {
 
   static final router = GoRouter(
     routes: [
-      GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(path: '/', builder: (context, state) => const OnBoardingView()),
+      GoRoute(path: kLoginView, builder: (context, state) => const LoginView()),
 
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
       GoRoute(
         path: kMainNavigation,
-        builder:
-            (context, state) => const MainNavigation(),
+        builder: (context, state) => const MainNavigation(),
       ),
       GoRoute(
-        path: kOnBoardingView,
-        builder: (context, state) => OnBoardingView(),
+        path: kAuthCoice,
+        builder: (context, state) => AuthChoiceScreen(),
       ),
       GoRoute(path: kRegisterView, builder: (context, state) => RegisterView()),
       GoRoute(

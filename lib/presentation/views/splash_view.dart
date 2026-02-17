@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/app_styles.dart';
 import 'package:tree_clinic/core/constants/assets.dart';
 import 'package:tree_clinic/presentation/manager/get_started_cubit/get_started_cubit.dart';
@@ -18,9 +16,9 @@ class SplashView extends StatelessWidget {
         body: BlocListener<GetStartedCubit, GetStartedState>(
           listener: (context, state) {
             if (state is UnAuthenticated) {
-              GoRouter.of(context).push(AppRouter.kOnBoardingView);
+              // GoRouter.of(context).push(AppRouter.kOnBoardingView);
             } else if (state is Authenticated) {
-              GoRouter.of(context).push(AppRouter.kMainNavigation);
+              // GoRouter.of(context).push(AppRouter.kOnBoardingView);
             }
           },
           child: Stack(
@@ -55,9 +53,9 @@ class SplashView extends StatelessWidget {
                       SizedBox(height: 32),
                       GestureDetector(
                         onTap: () {
-                          GoRouter.of(
-                            context,
-                          ).pushReplacement(AppRouter.kOnBoardingView);
+                          // GoRouter.of(
+                          //   context,
+                          // ).pushReplacement(AppRouter.kOnBoardingView);
                         },
                         child: SizedBox(
                           height: 80,

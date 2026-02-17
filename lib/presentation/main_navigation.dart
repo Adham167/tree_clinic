@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'home_page.dart';
-import 'profile_page.dart';
+import '../features/profile/presentation/profile_page.dart';
 import 'shop_page.dart';
 
 class MainNavigation extends StatefulWidget {
