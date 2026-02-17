@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/assets.dart';
-import 'package:tree_clinic/features/auth/presentation/manager/button_cubit/button_cubit.dart';
-import 'package:tree_clinic/features/auth/presentation/manager/signin_validation_cubit/signin_validation_cubit.dart';
-import 'package:tree_clinic/features/auth/presentation/manager/signup_validation_cubit/signup_validation_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/bottom_wave_clipper.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/floating_auth_button.dart';
 
