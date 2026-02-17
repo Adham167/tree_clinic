@@ -92,6 +92,7 @@ class _HomePageState extends State<HomePage>
       opacity: _fadeAnimation,
       child: Scaffold(
         appBar: AppBar(
+          leading: SizedBox(),
           title: Text("Home"),
           backgroundColor: Colors.green,
           actions: [
@@ -102,8 +103,8 @@ class _HomePageState extends State<HomePage>
                   context,
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => DashboardPage(),
-                    transitionsBuilder: (_, animation, __, child) =>
-                        SlideTransition(
+                    transitionsBuilder:
+                        (_, animation, __, child) => SlideTransition(
                           position: Tween<Offset>(
                             begin: Offset(1, 0),
                             end: Offset(0, 0),
@@ -158,12 +159,13 @@ class _HomePageState extends State<HomePage>
                     ),
                   ],
                 ),
-                child: imageFile == null
-                    ? Center(child: Text("No Image Selected"))
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.file(imageFile!, fit: BoxFit.cover),
-                      ),
+                child:
+                    imageFile == null
+                        ? Center(child: Text("No Image Selected"))
+                        : ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(imageFile!, fit: BoxFit.cover),
+                        ),
               ),
 
               SizedBox(height: 20),
@@ -175,13 +177,18 @@ class _HomePageState extends State<HomePage>
                   buildButton(Icons.camera_alt, "Camera", pickCamera),
                   buildButton(Icons.photo, "Gallery", pickGallery),
                   buildButton(Icons.analytics, "Predict", () {
-                     BlocProvider.of<PredictionCubit>(context).sendImage(imageFile!.path,selectedFruit);
+                    BlocProvider.of<PredictionCubit>(
+                      context,
+                    ).sendImage(imageFile!.path, selectedFruit);
                     Navigator.push(
                       context,
                       PageRouteBuilder(
                         pageBuilder: (_, __, ___) => LoadingPage(),
-                        transitionsBuilder: (_, animation, __, child) =>
-                            FadeTransition(opacity: animation, child: child),
+                        transitionsBuilder:
+                            (_, animation, __, child) => FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            ),
                       ),
                     );
                   }),

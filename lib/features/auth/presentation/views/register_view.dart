@@ -4,8 +4,8 @@ import 'package:tree_clinic/core/constants/app_colors.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/button_cubit/button_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/signin_validation_cubit/signin_validation_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/signup_validation_cubit/signup_validation_cubit.dart';
-import 'package:tree_clinic/features/auth/presentation/widgets/login_body.dart';
-import 'package:tree_clinic/features/auth/presentation/widgets/sign_up_body.dart';
+import 'package:tree_clinic/features/auth/presentation/views/login_view.dart';
+import 'package:tree_clinic/features/auth/presentation/widgets/sign_up_view.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -40,7 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           body: Container(
             padding: EdgeInsets.all(10),
-            child: TabBarView(children: [LoginView(), SignUpBody()]),
+            child: TabBarView(children: [LoginView(), SignUpView()]),
           ),
         ),
       ),

@@ -54,6 +54,10 @@ class Assets {
   /// assets/images/onboarding_3.png
   static const String imagesOnboarding3 = "assets/images/onboarding_3.png";
 
+  /// Assets for imagesSignUp
+  /// assets/images/SignUp.png
+  static const String imagesSignUp = "assets/images/SignUp.png";
+
   /// Assets for imagesSuccess
   /// assets/images/Success.png
   static const String imagesSuccess = "assets/images/Success.png";
