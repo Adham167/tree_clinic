@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/presentation/manager/onboarding_cubit/onboarding_cubit.dart';
 import 'package:tree_clinic/presentation/models/on_boarding_model.dart';
 
@@ -12,9 +14,11 @@ class OnboardingPageViewWidget extends StatelessWidget {
 
   final List<OnBoardingModel> onboardingList;
   final PageController pageController;
+
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
+      physics: const BouncingScrollPhysics(),
       controller: pageController,
       onPageChanged:
           (index) => context.read<OnboardingCubit>().changePage(index),
@@ -64,22 +68,26 @@ class OnboardingPageViewWidget extends StatelessWidget {
                   ),
                 ),
 
-                Positioned(
-                  top: 50,
-                  right: 20,
-                  child: TextButton(
-                    onPressed:
-                        () => context.read<OnboardingCubit>().nextPage(context),
-                    child: const Text(
-                      "Skip",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                if (!isLast)
+                  Positioned(
+                    top: 50,
+                    right: 20,
+                    child: TextButton(
+                      onPressed: () {
+                        GoRouter.of(
+                          context,
+                        ).pushReplacement(AppRouter.kAuthCoice);
+                      },
+                      child: const Text(
+                        "Skip",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(

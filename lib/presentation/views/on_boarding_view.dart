@@ -6,9 +6,17 @@ import 'package:tree_clinic/core/widgets/custom_floating_button.dart';
 import 'package:tree_clinic/presentation/manager/onboarding_cubit/onboarding_cubit.dart';
 import 'package:tree_clinic/presentation/models/on_boarding_model.dart';
 import 'package:tree_clinic/presentation/widget/onboarding_page_view_widget.dart';
+import 'package:tree_clinic/presentation/widget/onboarding_controllar.dart';
 
-class OnBoardingView extends StatelessWidget {
+class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
+
+  @override
+  State<OnBoardingView> createState() => _OnBoardingViewState();
+}
+
+class _OnBoardingViewState extends State<OnBoardingView> {
+  final PageController pageController = PageController();
 
   final List<OnBoardingModel> onboardingList = const [
     OnBoardingModel(
@@ -31,7 +39,6 @@ class OnBoardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageController = PageController();
     return BlocProvider(
       create: (context) => OnboardingCubit(onboardingList, pageController),
       child: Scaffold(
@@ -40,9 +47,7 @@ class OnBoardingView extends StatelessWidget {
           builder: (context, state) {
             return CustomFloatingButton(
               ontap:
-                  () => BlocProvider.of<OnboardingCubit>(
-                    context,
-                  ).nextPage(context),
+                  () => context.read<OnboardingCubit>().nextPage(context),
             );
           },
         ),
@@ -54,6 +59,21 @@ class OnBoardingView extends StatelessWidget {
                 onboardingList: onboardingList,
               ),
             ),
+
+            const SizedBox(height: 20),
+
+            BlocBuilder<OnboardingCubit, OnboardingState>(
+              builder: (context, state) {
+                final cubit = context.read<OnboardingCubit>();
+
+                return OnboardingControllar(
+                  onboardingList: onboardingList,
+                  currentIndex: cubit.currentPage,
+                );
+              },
+            ),
+
+            const SizedBox(height: 40),
           ],
         ),
       ),

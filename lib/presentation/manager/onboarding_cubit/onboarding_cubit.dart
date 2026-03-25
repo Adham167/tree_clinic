@@ -9,8 +9,10 @@ part 'onboarding_state.dart';
 class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit(this.onboadingList, this.pageController)
     : super(OnboardingInitial());
+
   final PageController pageController;
   final List<OnBoardingModel> onboadingList;
+
   int currentPage = 0;
 
   void changePage(int index) {
@@ -21,11 +23,13 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   void nextPage(BuildContext context) {
     if (currentPage < onboadingList.length - 1) {
       currentPage++;
+
       pageController.animateToPage(
         currentPage,
-        duration: Duration(microseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
+
       emit(OnboardingPageChanged(currentPage));
     } else {
       GoRouter.of(context).push(AppRouter.kAuthCoice);

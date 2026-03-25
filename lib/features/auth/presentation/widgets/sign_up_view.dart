@@ -13,6 +13,7 @@ import 'package:tree_clinic/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/button_cubit/button_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/signup_validation_cubit/signup_validation_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:tree_clinic/features/auth/presentation/widgets/user_type_drop_down.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -22,23 +23,14 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  final TextEditingController _fullName = TextEditingController();
-
-  final TextEditingController _email = TextEditingController();
-
-  final TextEditingController _phone = TextEditingController();
-
-  final TextEditingController _password = TextEditingController();
-
-  final TextEditingController _confirmpassword = TextEditingController();
-
   GlobalKey<FormState> globalKey = GlobalKey();
   UserModel userModel = UserModel(
     name: "",
     email: "",
     phone: "",
     password: "",
-    ConfirmPassword: "",
+    confirmPassword: "",
+    type: "",
   );
   bool obsecureText1 = true;
   bool obsecureText2 = true;
@@ -139,6 +131,12 @@ class _SignUpViewState extends State<SignUpView> {
                               },
                             ),
                             SizedBox(height: 8),
+                            UserTypeDropDown(
+                              onchange: (value) {
+                                userModel.type = value!;
+                              },
+                            ),
+                            SizedBox(height: 8),
                             CustomFormTextField(
                               label: "Password",
                               obscureText: obsecureText1,
@@ -176,7 +174,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 ),
                               ),
                               onChanged: (data) {
-                                userModel.ConfirmPassword = data;
+                                userModel.confirmPassword = data;
                               },
                             ),
                             if (state is SignupValidationFailure)
@@ -203,8 +201,9 @@ class _SignUpViewState extends State<SignUpView> {
                                         email: userModel.email,
                                         phone: userModel.phone,
                                         password: userModel.password,
-                                        ConfirmPassword:
-                                            userModel.ConfirmPassword,
+                                        confirmPassword:
+                                            userModel.confirmPassword,
+                                        type: userModel.type,
                                       ),
                                     );
                                   }

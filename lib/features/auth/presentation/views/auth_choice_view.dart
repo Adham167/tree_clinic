@@ -45,10 +45,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen>
   }
 
   void openRegister() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (_) => const RegisterScreen()),
-    // );
+ 
     GoRouter.of(context).push(AppRouter.kSignUpView);
   }
 

@@ -15,10 +15,4 @@ class AuthRepoImpl extends AuthRepo {
   Future<Either> signIn(UserSigninModel user) async {
     return await sl<AutnFirebaseService>().signIn(user);
   }
-  
-  @override
-  Future<Either> signInWithGoogle() {
-    // TODO: implement signInWithGoogle
-    throw UnimplementedError();
-  }
 }

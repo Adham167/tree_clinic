@@ -11,8 +11,8 @@ class AuthFirebaseServiceImpl extends AutnFirebaseService {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: user.email!,
-            password: user.password!,
+            email: user.email,
+            password: user.password,
           );
 
       FirebaseFirestore.instance
@@ -22,8 +22,9 @@ class AuthFirebaseServiceImpl extends AutnFirebaseService {
             'fullname': user.name,
             'email': user.email,
             'phone': user.phone,
+            'type': user.type,
             'password': user.password,
-            'confirmpassword': user.ConfirmPassword,
+            'confirmpassword': user.confirmPassword,
           });
       return const Right('Sign up was successfull');
     } on FirebaseAuthException catch (e) {
@@ -55,29 +56,4 @@ class AuthFirebaseServiceImpl extends AutnFirebaseService {
       return left(message);
     }
   }
-
-  @override
-  Future<Either> signInWithGoogle() {
-    // TODO: implement signInWithGoogle
-    throw UnimplementedError();
-  }
 }
-
-//   Future<UserCredential> signInWithGoogle() async {
-//     // Trigger the authentication flow
-//     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-//     // Obtain the auth details from the request
-//     final GoogleSignInAuthentication? googleAuth =
-//         await googleUser?.authentication;
-
-//     // Create a new credential
-//     final credential = GoogleAuthProvider.credential(
-//       accessToken: googleAuth?.accessToken,
-//       idToken: googleAuth?.idToken,
-//     );
-
-//     // Once signed in, return the UserCredential
-//     return await FirebaseAuth.instance.signInWithCredential(credential);
-//   }
-// }

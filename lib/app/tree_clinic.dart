@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
@@ -14,6 +15,9 @@ class TreeClinic extends StatelessWidget {
       child: MaterialApp.router(
         theme: LightTheme.theme,
         debugShowCheckedModeBanner: false,
+        // useInheritedMediaQuery: true,
+        // locale: DevicePreview.locale(context),
+        // builder: DevicePreview.appBuilder,
         routerConfig: AppRouter.router,
       ),
     );
