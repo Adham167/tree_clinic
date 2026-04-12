@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:tree_clinic/core/errors/failures.dart';
 import 'package:tree_clinic/features/auth/data/model/user_model.dart';
 import 'package:tree_clinic/features/auth/data/model/user_signIn_model.dart';
@@ -59,23 +58,21 @@ class AuthFirebaseServiceImpl extends AutnFirebaseService {
     }
   }
 
- @override
-Future<Either<Failure, UserModel>> getCurrentUser() async {
-  try {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+  @override
+  Future<Either<Failure, UserModel>> getCurrentUser() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
 
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
+      final doc =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
-    if (!doc.exists || doc.data() == null) {
-      return Left(ServerFailure("User not found"));
+      if (!doc.exists || doc.data() == null) {
+        return Left(ServerFailure("User not found"));
+      }
+
+      return Right(UserModel.fromJson(doc.data()!));
+    } catch (e) {
+      return Left(ServerFailure("There was an error"));
     }
-
-    return Right(UserModel.fromJson(doc.data()!));
-  } catch (e) {
-    return Left(ServerFailure("There was an error"));
   }
-}
 }

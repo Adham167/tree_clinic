@@ -42,7 +42,7 @@ class _UserTypeDropDownState extends State<UserTypeDropDown> {
           ),
         ),
         DropdownMenuItem(
-          value: "merchant",
+          value: "Merchant",
           child: Row(
             children: [
               Icon(Icons.store_rounded, color: Colors.green),

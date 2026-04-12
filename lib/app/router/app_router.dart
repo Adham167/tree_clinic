@@ -11,6 +11,7 @@ import 'package:tree_clinic/features/auth/presentation/views/success_reset_passw
 import 'package:tree_clinic/features/auth/presentation/views/sucess_sign_up.dart';
 import 'package:tree_clinic/features/auth/presentation/views/login_view.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/sign_up_view.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:tree_clinic/presentation/main_navigation.dart';
 import 'package:tree_clinic/presentation/views/home_view.dart';
 import 'package:tree_clinic/presentation/views/on_boarding_view.dart';
@@ -28,6 +29,7 @@ abstract class AppRouter {
   static const kSuccessResetPassword = '/SuccessResetPassword';
   static const kSucessSignUp = '/SucessSignUp';
   static const kMainNavigation = '/MainNavigation';
+  static const kDashboardView = '/DashboardView';
 
   static final router = GoRouter(
     routes: [
@@ -62,6 +64,10 @@ abstract class AppRouter {
       ),
 
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
+      GoRoute(
+        path: kDashboardView,
+        builder: (context, state) => const DashboardView(),
+      ),
       GoRoute(
         path: kMainNavigation,
         builder: (context, state) => const MainNavigation(),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:tree_clinic/features/shopping/presentation/views/shop_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tree_clinic/app/di/service_locator.dart';
+import 'package:tree_clinic/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:tree_clinic/presentation/manager/current_user_cubit/current_user_cubit.dart';
 import 'home_page.dart';
-import '../features/profile/presentation/profile_page.dart';
+import '../features/profile/presentation/views/profile_View.dart';
 import 'shop_page.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -17,7 +20,7 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int index = 1;
-  final screens = [ProfilePage(), HomePage(), ShopPage()];
+  final screens = [ProfileView(), HomePage(), ShopPage()];
 
   void goToHome() {
     setState(() {
@@ -27,22 +30,26 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        index: index,
-        backgroundColor: Colors.transparent,
-        color: Colors.green,
-        buttonBackgroundColor: Colors.green.shade700,
-        height: 60,
-        animationDuration: Duration(milliseconds: 400),
-        items: const [
-          Icon(Icons.person, color: Colors.white, size: 30),
-          Icon(Icons.home, color: Colors.white, size: 30),
-          Icon(Icons.store, color: Colors.white, size: 30),
-        ],
-        onTap: (i) => setState(() => index = i),
+    return BlocProvider(
+      create:
+          (context) => CurrentUserCubit(usecase: sl<GetCurrentUserUsecase>()),
+      child: Scaffold(
+        bottomNavigationBar: CurvedNavigationBar(
+          index: index,
+          backgroundColor: Colors.transparent,
+          color: Colors.green,
+          buttonBackgroundColor: Colors.green.shade700,
+          height: 60,
+          animationDuration: Duration(milliseconds: 400),
+          items: const [
+            Icon(Icons.person, color: Colors.white, size: 30),
+            Icon(Icons.home, color: Colors.white, size: 30),
+            Icon(Icons.store, color: Colors.white, size: 30),
+          ],
+          onTap: (i) => setState(() => index = i),
+        ),
+        body: screens[index],
       ),
-      body: screens[index],
     );
   }
 }

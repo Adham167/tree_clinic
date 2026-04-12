@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/features/prediction/presentation/manager/cubit/prediction_cubit.dart';
+import 'package:tree_clinic/presentation/manager/current_user_cubit/current_user_cubit.dart';
 import 'loading_page.dart';
 import '../features/dashboard/presentation/views/dashboard_view.dart';
 
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
+    BlocProvider.of<CurrentUserCubit>(context).getCurrentUser();
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -97,27 +99,7 @@ class _HomePageState extends State<HomePage>
           leading: SizedBox(),
           title: Text("Home"),
           backgroundColor: Colors.green,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.dashboard),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => DashboardView(),
-                    transitionsBuilder:
-                        (_, animation, __, child) => SlideTransition(
-                          position: Tween<Offset>(
-                            begin: Offset(1, 0),
-                            end: Offset(0, 0),
-                          ).animate(animation),
-                          child: child,
-                        ),
-                  ),
-                );
-              },
-            ),
-          ],
+          actions: [DashBoardIcon()],
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),
@@ -200,6 +182,35 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
+    );
+  }
+}
+
+class DashBoardIcon extends StatelessWidget {
+  const DashBoardIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CurrentUserCubit, CurrentUserState>(
+      builder: (context, state) {
+        if (state is CurrentUserLoading) {
+          return Center(child: Icon(Icons.error));
+        } else if (state is CurrentUserSuccess) {
+          if (state.userModel.type == "Merchant") {
+            return IconButton(
+              icon: Icon(Icons.dashboard),
+              onPressed: () {
+                GoRouter.of(context).push(AppRouter.kDashboardView);
+              },
+            );
+          } else {
+            return SizedBox();
+          }
+        } else if (state is CurrentUserFailure) {
+          return Center(child: Icon(Icons.error));
+        }
+        return SizedBox();
+      },
     );
   }
 }
