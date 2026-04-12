@@ -6,7 +6,7 @@ import 'package:tree_clinic/features/auth/data/model/user_model.dart';
 import 'package:tree_clinic/features/auth/data/model/user_signIn_model.dart';
 import 'package:tree_clinic/features/auth/domain/repo/autn_firebase_service.dart';
 
-class AuthFirebaseServiceImpl extends AutnFirebaseService {
+class AuthFirebaseServiceImpl implements AuthFirebaseService {
   @override
   Future<Either> signup(UserModel user) async {
     try {

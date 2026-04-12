@@ -5,19 +5,19 @@ import 'package:tree_clinic/features/auth/data/model/user_signIn_model.dart';
 import 'package:tree_clinic/features/auth/domain/repo/auth_repo.dart';
 import 'package:tree_clinic/features/auth/domain/repo/autn_firebase_service.dart';
 
-class AuthRepoImpl extends AuthRepo {
+class AuthRepoImpl implements AuthRepo {
   @override
   Future<Either> signUp(UserModel user) async {
-    return await sl<AutnFirebaseService>().signup(user);
+    return await sl<AuthFirebaseService>().signup(user);
   }
 
   @override
   Future<Either> signIn(UserSigninModel user) async {
-    return await sl<AutnFirebaseService>().signIn(user);
+    return await sl<AuthFirebaseService>().signIn(user);
   }
 
   @override
   Future<Either<dynamic, dynamic>> getCurrentUser() async {
-    return await sl<AutnFirebaseService>().getCurrentUser();
+    return await sl<AuthFirebaseService>().getCurrentUser();
   }
 }
