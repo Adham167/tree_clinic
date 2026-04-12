@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/widgets/dashboard_card.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/widgets/dashboard_header.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -6,12 +8,62 @@ class DashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text("Dashboard"),
+        title: const Text("Merchant Dashboard"),
         backgroundColor: Colors.green,
-        leading: BackButton(color: Colors.white),
+        leading: const BackButton(),
       ),
-      body: Center(child: Text("Dashboard Page")),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const DashboardHeader(),
+
+            const SizedBox(height: 20),
+
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                children: const [
+                  DashboardCard(
+                    title: "Add Shop",
+                    icon: Icons.store,
+                    color: Colors.green,
+                  ),
+                  DashboardCard(
+                    title: "Add Category",
+                    icon: Icons.category,
+                    color: Colors.orange,
+                  ),
+                  DashboardCard(
+                    title: "Add Product",
+                    icon: Icons.add_box,
+                    color: Colors.blue,
+                  ),
+                  DashboardCard(
+                    title: "Orders",
+                    icon: Icons.shopping_cart,
+                    color: Colors.purple,
+                  ),
+                  DashboardCard(
+                    title: "My Products",
+                    icon: Icons.inventory,
+                    color: Colors.teal,
+                  ),
+                  DashboardCard(
+                    title: "Statistics",
+                    icon: Icons.bar_chart,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
