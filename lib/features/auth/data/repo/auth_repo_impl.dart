@@ -15,4 +15,9 @@ class AuthRepoImpl extends AuthRepo {
   Future<Either> signIn(UserSigninModel user) async {
     return await sl<AutnFirebaseService>().signIn(user);
   }
+
+  @override
+  Future<Either<dynamic, dynamic>> getCurrentUser() async {
+    return await sl<AutnFirebaseService>().getCurrentUser();
+  }
 }

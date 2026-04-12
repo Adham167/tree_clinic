@@ -14,4 +14,15 @@ class UserModel {
     required this.confirmPassword,
     required this.type,
   });
+
+  factory UserModel.fromJson(data) {
+    return UserModel(
+      name: data['fullname'],
+      email: data['email'],
+      phone: data['phone'],
+      password: data['password'],
+      confirmPassword: data['confirmpassword'],
+      type: data['type'],
+    );
+  }
 }

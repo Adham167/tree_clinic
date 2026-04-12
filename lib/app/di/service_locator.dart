@@ -3,6 +3,7 @@ import 'package:tree_clinic/features/auth/data/repo/auth_repo_impl.dart';
 import 'package:tree_clinic/features/auth/data/source/auth_firebase_service_impl.dart';
 import 'package:tree_clinic/features/auth/domain/repo/auth_repo.dart';
 import 'package:tree_clinic/features/auth/domain/repo/autn_firebase_service.dart';
+import 'package:tree_clinic/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tree_clinic/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:tree_clinic/features/auth/domain/usecases/signup_usecase.dart';
 
@@ -18,4 +19,5 @@ Future<void> initializeDependencies() async {
   //UseCases
   sl.registerSingleton<SignupUsecase>(SignupUsecase());
   sl.registerSingleton<SigninUsecase>(SigninUsecase());
+  sl.registerSingleton<GetCurrentUserUsecase>(GetCurrentUserUsecase());
 }

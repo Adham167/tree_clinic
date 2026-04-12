@@ -41,7 +41,7 @@ class _SignUpViewState extends State<SignUpView> {
         if (state is ButtonFailure) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text("state.errMessage")));
+          ).showSnackBar(SnackBar(content: Text(state.errMessage)));
           log(state.errMessage);
         } else if (state is ButtonSuccess) {
           GoRouter.of(context).push(AppRouter.kLoginView);

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class UserTypeDropDown extends StatefulWidget {
   const UserTypeDropDown({super.key, required this.onchange});
   final Function(String?) onchange;
+
   @override
   State<UserTypeDropDown> createState() => _UserTypeDropDownState();
 }
 
 class _UserTypeDropDownState extends State<UserTypeDropDown> {
   String? type = 'Farmer';
+
   @override
   void initState() {
     super.initState();
@@ -19,22 +21,38 @@ class _UserTypeDropDownState extends State<UserTypeDropDown> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: type,
-      decoration: const InputDecoration(
-        labelText: "User Type",
-        border: OutlineInputBorder(),
-      ),
-      hint: const Text("Select Type"),
-      icon: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Transform.rotate(
-          angle: -1.5708,
-          child: Icon(Icons.arrow_back_ios),
-        ),
-      ),
+      isExpanded: true,
+      menuMaxHeight: 250,
+      borderRadius: BorderRadius.circular(16),
+      dropdownColor: Colors.white,
+
+      decoration: const InputDecoration(labelText: "User Type"),
+
+      icon: const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.green),
+
       items: const [
-        DropdownMenuItem(value: "Farmer", child: Text("Farmer")),
-        DropdownMenuItem(value: "merchant", child: Text("merchant")),
+        DropdownMenuItem(
+          value: "Farmer",
+          child: Row(
+            children: [
+              Icon(Icons.agriculture_sharp, color: Colors.green),
+              SizedBox(width: 12),
+              Text("Farmer"),
+            ],
+          ),
+        ),
+        DropdownMenuItem(
+          value: "merchant",
+          child: Row(
+            children: [
+              Icon(Icons.store_rounded, color: Colors.green),
+              SizedBox(width: 12),
+              Text("Merchant"),
+            ],
+          ),
+        ),
       ],
+
       onChanged: (value) {
         setState(() {
           type = value;

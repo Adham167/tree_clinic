@@ -1,71 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:tree_clinic/features/shopping/data/model/product_model.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key,
-    required this.title,
-  });
+  final ProductModel product;
 
-  final String title;
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 10,
-            color: Colors.grey.withOpacity(.2),
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image
-          Container(
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(16),
-              ),
-              color: Colors.green.withOpacity(.1),
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.medication,
-                size: 50,
-                color: Colors.green,
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              child: Image.network(
+                product.image,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
           ),
 
-          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              product.name,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              title,
-              style: const TextStyle(
+              product.description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              "${product.price} EGP",
+              style: TextStyle(
+                color: Colors.green,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-          ),
-
-          const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: const Size(double.infinity, 40),
-              ),
-              child: const Text("View"),
             ),
           ),
         ],

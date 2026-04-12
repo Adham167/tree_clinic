@@ -34,19 +34,38 @@ class LightTheme {
     ),
 
     inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+
       hintStyle: const TextStyle(color: AppColors.lightHint),
+
+      labelStyle: const TextStyle(color: AppColors.lightTextSecondary),
+
       contentPadding: const EdgeInsets.all(16),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Colors.grey, width: 2),
-      ),
+
+      prefixIconColor: Colors.green,
+      suffixIconColor: Colors.green,
+
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
+
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Colors.grey, width: 2),
+        borderRadius: BorderRadius.circular(18),
+        borderSide: BorderSide(color: Colors.green.withOpacity(0.5), width: 2),
       ),
+
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: AppColors.lightTextSecondary, width: 3),
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Colors.green, width: 3),
+      ),
+
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Colors.red, width: 2),
+      ),
+
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Colors.red, width: 3),
       ),
     ),
 
@@ -60,6 +79,7 @@ class LightTheme {
     ),
 
     cardColor: AppColors.lightSurface,
+
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: AppColors.lightSurface,
       contentTextStyle: TextStyle(color: AppColors.lightTextPrimary),

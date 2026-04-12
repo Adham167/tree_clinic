@@ -30,22 +30,7 @@ class CustomFormTextField extends StatelessWidget {
       },
       obscureText: obscureText!,
       onChanged: onChanged,
-      decoration: InputDecoration(
-        suffixIcon: iconButton,
-        hintText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(
-            color: Colors.green.withOpacity(0.5),
-            width: 2,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Colors.green, width: 3),
-        ),
-      ),
+      decoration: InputDecoration(suffixIcon: iconButton, hintText: label),
     );
   }
 

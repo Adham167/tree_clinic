@@ -14,6 +14,7 @@ import 'package:tree_clinic/features/auth/presentation/widgets/sign_up_view.dart
 import 'package:tree_clinic/presentation/main_navigation.dart';
 import 'package:tree_clinic/presentation/views/home_view.dart';
 import 'package:tree_clinic/presentation/views/on_boarding_view.dart';
+import 'package:tree_clinic/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
   static const kGetOnBoardingView = '/GetOnBoardingView';
@@ -30,7 +31,11 @@ abstract class AppRouter {
 
   static final router = GoRouter(
     routes: [
-      GoRoute(path: '/', builder: (context, state) => const OnBoardingView()),
+      GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(
+        path: kGetOnBoardingView,
+        builder: (context, state) => const OnBoardingView(),
+      ),
       GoRoute(
         path: kLoginView,
         builder:

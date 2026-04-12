@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:tree_clinic/features/shopping/presentation/views/shop_view.dart';
 import 'home_page.dart';
 import '../features/profile/presentation/profile_page.dart';
 import 'shop_page.dart';
