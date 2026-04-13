@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/widgets/dashboard_card.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/widgets/dashboard_header.dart';
 
@@ -27,8 +29,11 @@ class DashboardView extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 15,
                 mainAxisSpacing: 15,
-                children: const [
+                children: [
                   DashboardCard(
+                    onTap: () {
+                      GoRouter.of(context).push(AppRouter.kCreateShopView);
+                    },
                     title: "Add Shop",
                     icon: Icons.store,
                     color: Colors.green,

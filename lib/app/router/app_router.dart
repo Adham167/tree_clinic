@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tree_clinic/app/di/service_locator.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/button_cubit/button_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/signin_validation_cubit/signin_validation_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/signup_validation_cubit/signup_validation_cubit.dart';
@@ -11,6 +12,9 @@ import 'package:tree_clinic/features/auth/presentation/views/success_reset_passw
 import 'package:tree_clinic/features/auth/presentation/views/sucess_sign_up.dart';
 import 'package:tree_clinic/features/auth/presentation/views/login_view.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/sign_up_view.dart';
+import 'package:tree_clinic/features/dashboard/domain/usecase/add_shop_usecase.dart';
+import 'package:tree_clinic/features/dashboard/presentation/manager/cubit/add_shop_cubit.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/create_shop_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:tree_clinic/presentation/main_navigation.dart';
 import 'package:tree_clinic/presentation/views/home_view.dart';
@@ -30,6 +34,7 @@ abstract class AppRouter {
   static const kSucessSignUp = '/SucessSignUp';
   static const kMainNavigation = '/MainNavigation';
   static const kDashboardView = '/DashboardView';
+  static const kCreateShopView = '/CreateShopView';
 
   static final router = GoRouter(
     routes: [
@@ -64,6 +69,27 @@ abstract class AppRouter {
       ),
 
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
+
+      GoRoute(
+        path: kCreateShopView,
+        builder: (context, state) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<AddShopCubit>(
+                create:
+                    (context) =>
+                        AddShopCubit(addShopUsecase: sl<AddShopUsecase>()),
+              ),
+              BlocProvider<ButtonCubit>(
+                create:
+                    (context) =>
+                        ButtonCubit(),
+              ),
+            ],
+            child: const CreateShopView(),
+          );
+        },
+      ),
       GoRoute(
         path: kDashboardView,
         builder: (context, state) => const DashboardView(),

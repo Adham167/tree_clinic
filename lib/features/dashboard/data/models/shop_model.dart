@@ -1,3 +1,5 @@
+import 'package:tree_clinic/features/dashboard/domain/entities/shop_entity.dart';
+
 class ShopModel {
   final String id;
   final String ownerId;
@@ -26,6 +28,17 @@ class ShopModel {
       image: json['image'] ?? '',
       address: json['address'] ?? '',
       createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
+  factory ShopModel.fromEntity(ShopEntity entity) {
+    return ShopModel(
+      id: entity.id,
+      ownerId: entity.ownerId,
+      name: entity.name,
+      description: entity.description,
+      image: entity.image,
+      createdAt: entity.createdAt,
+      address: entity.address,
     );
   }
 

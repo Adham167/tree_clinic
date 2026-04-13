@@ -16,4 +16,24 @@ class ShopEntity {
     required this.createdAt,
     required this.address,
   });
+
+  ShopEntity copyWith({
+    String? id,
+    String? ownerId,
+    String? name,
+    String? description,
+    String? address,
+    String? image,
+    DateTime? createdAt,
+  }) {
+    return ShopEntity(
+      id: id ?? this.id,
+      ownerId: ownerId ?? this.ownerId,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      address: address ?? this.address,
+      image: image ?? this.image,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
