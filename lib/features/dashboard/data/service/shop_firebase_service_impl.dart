@@ -20,4 +20,23 @@ class ShopFirebaseServiceImpl implements ShopFirebaseService {
       return left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, ShopModel?>> getMyShop(String uid) async {
+    try {
+      final result =
+          await FirebaseFirestore.instance
+              .collection("shops")
+              .where("ownerId", isEqualTo: uid)
+              .limit(1)
+              .get();
+
+      if (result.docs.isEmpty) return right(null);
+      return right(
+        ShopModel.fromJson(result.docs.first.data(), result.docs.first.id),
+      );
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }

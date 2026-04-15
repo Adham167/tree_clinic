@@ -7,7 +7,6 @@ import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/features/prediction/presentation/manager/cubit/prediction_cubit.dart';
 import 'package:tree_clinic/presentation/manager/current_user_cubit/current_user_cubit.dart';
 import 'loading_page.dart';
-import '../features/dashboard/presentation/views/dashboard_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:tree_clinic/core/usecases/usecase.dart';
-import 'package:tree_clinic/features/dashboard/domain/usecase/add_shop_usecase.dart';
 
 part 'button_state.dart';
 

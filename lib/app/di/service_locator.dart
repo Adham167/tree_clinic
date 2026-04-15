@@ -11,6 +11,7 @@ import 'package:tree_clinic/features/dashboard/data/service/shop_firebase_servic
 import 'package:tree_clinic/features/dashboard/domain/repo/shop_firebase_service.dart';
 import 'package:tree_clinic/features/dashboard/domain/repo/shop_repo.dart';
 import 'package:tree_clinic/features/dashboard/domain/usecase/add_shop_usecase.dart';
+import 'package:tree_clinic/features/dashboard/domain/usecase/get_shop_usecase.dart';
 
 final sl = GetIt.instance;
 
@@ -28,4 +29,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<SigninUsecase>(SigninUsecase());
   sl.registerSingleton<GetCurrentUserUsecase>(GetCurrentUserUsecase());
   sl.registerSingleton<AddShopUsecase>(AddShopUsecase());
+  sl.registerSingleton<GetShopUsecase>(GetShopUsecase());
 }

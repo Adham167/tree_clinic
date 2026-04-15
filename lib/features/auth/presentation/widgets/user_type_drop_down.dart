@@ -20,7 +20,7 @@ class _UserTypeDropDownState extends State<UserTypeDropDown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: type,
+      initialValue: type,
       isExpanded: true,
       menuMaxHeight: 250,
       borderRadius: BorderRadius.circular(16),

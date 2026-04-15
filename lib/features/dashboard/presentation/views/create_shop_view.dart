@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tree_clinic/app/di/service_locator.dart';
-import 'package:tree_clinic/core/widgets/custom_reactive_button.dart';
-import 'package:tree_clinic/features/auth/presentation/manager/button_cubit/button_cubit.dart';
+import 'package:tree_clinic/core/widgets/custom_reactive_button2.dart';
 import 'package:tree_clinic/features/dashboard/domain/entities/shop_entity.dart';
-import 'package:tree_clinic/features/dashboard/domain/usecase/add_shop_usecase.dart';
-import 'package:tree_clinic/features/dashboard/presentation/manager/cubit/add_shop_cubit.dart';
+import 'package:tree_clinic/features/dashboard/presentation/manager/add_shop_cubit/add_shop_cubit.dart';
 
 class CreateShopView extends StatefulWidget {
   const CreateShopView({super.key});
@@ -113,24 +110,44 @@ class _CreateShopViewState extends State<CreateShopView> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: CustomReactiveButton(
-                  color: Colors.green,
-                  title: "Create Shop",
+                child: BlocConsumer<AddShopCubit, AddShopState>(
+                  listener: (context, state) {
+                    if (state is AddShopSuccess) {
+                      GoRouter.of(context).pop();
+                    }
 
-                  onPressed: () {
-                    final shop = ShopEntity(
-                      id: "",
-                      ownerId: "",
-                      name: nameController.text,
-                      description: descController.text,
-                      image: '',
-                      createdAt: DateTime.now(),
-                      address: addressController.text,
+                    if (state is AddShopFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.errMessage),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: CustomReactiveButton2(
+                        title: "Create Shop",
+                        color: Colors.green,
+                        isLoading: state is AddShopLoading,
+                        onPressed: () {
+                          final shop = ShopEntity(
+                            id: "",
+                            ownerId: "",
+                            name: nameController.text,
+                            description: descController.text,
+                            image: '',
+                            createdAt: DateTime.now(),
+                            address: addressController.text,
+                          );
+                          context.read<AddShopCubit>().addShop(shop);
+                        },
+                      ),
                     );
-                    BlocProvider.of<ButtonCubit>(
-                      context,
-                    ).excute(usecase: sl<AddShopUsecase>(), params: shop);
-                    GoRouter.of(context).pop();
                   },
                 ),
               ),

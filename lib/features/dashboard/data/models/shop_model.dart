@@ -72,4 +72,16 @@ class ShopModel {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  ShopEntity toEntity() {
+    return ShopEntity(
+      id: id,
+      ownerId: ownerId,
+      name: name,
+      description: description,
+      image: image,
+      createdAt: createdAt,
+      address: address,
+    );
+  }
 }
