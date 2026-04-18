@@ -4,6 +4,7 @@ import 'package:tree_clinic/core/errors/failures.dart';
 import 'package:tree_clinic/features/dashboard/domain/entities/shop_entity.dart';
 import 'package:tree_clinic/features/dashboard/domain/repo/shop_firebase_service.dart';
 import 'package:tree_clinic/features/dashboard/domain/repo/shop_repo.dart';
+import 'package:tree_clinic/features/shopping/data/model/product_model.dart';
 
 class ShopRepoImpl implements ShopRepo {
   @override
@@ -19,4 +20,8 @@ class ShopRepoImpl implements ShopRepo {
       (model) => Right(model?.toEntity()), // افترض وجود toEntity()
     );
   }
+  @override
+Future<Either<Failure, void>> addProduct(ProductModel product) async {
+  return await sl<ShopFirebaseService>().addProduct(product);
+}
 }

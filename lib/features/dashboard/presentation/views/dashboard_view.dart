@@ -19,7 +19,7 @@ class DashboardView extends StatelessWidget {
           GoRouter.of(
             context,
           ).push(AppRouter.kMyShopView, extra: state.shopEntity);
-                } else if (state is GetShopFailure) {
+        } else if (state is GetShopFailure) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.errMessage)));
@@ -54,31 +54,35 @@ class DashboardView extends StatelessWidget {
                       icon: Icons.store,
                       color: Colors.green,
                     ),
-                    DashboardCard(
-                      title: "Add Category",
-                      icon: Icons.category,
-                      color: Colors.orange,
-                    ),
+                    // DashboardCard(
+                    //   title: "Add Category",
+                    //   icon: Icons.category,
+                    //   color: Colors.orange,
+                    // ),
                     DashboardCard(
                       title: "Add Product",
                       icon: Icons.add_box,
                       color: Colors.blue,
+                      onTap: () {
+                        
+                        GoRouter.of(context).push(AppRouter.kaddProductView);
+                      },
                     ),
-                    DashboardCard(
-                      title: "Orders",
-                      icon: Icons.shopping_cart,
-                      color: Colors.purple,
-                    ),
-                    DashboardCard(
-                      title: "My Products",
-                      icon: Icons.inventory,
-                      color: Colors.teal,
-                    ),
-                    DashboardCard(
-                      title: "Statistics",
-                      icon: Icons.bar_chart,
-                      color: Colors.red,
-                    ),
+                    // DashboardCard(
+                    //   title: "Orders",
+                    //   icon: Icons.shopping_cart,
+                    //   color: Colors.purple,
+                    // ),
+                    // DashboardCard(
+                    //   title: "My Products",
+                    //   icon: Icons.inventory,
+                    //   color: Colors.teal,
+                    // ),
+                    // DashboardCard(
+                    //   title: "Statistics",
+                    //   icon: Icons.bar_chart,
+                    //   color: Colors.red,
+                    // ),
                   ],
                 ),
               ),

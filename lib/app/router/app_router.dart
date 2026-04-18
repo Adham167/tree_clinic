@@ -15,8 +15,10 @@ import 'package:tree_clinic/features/auth/presentation/widgets/sign_up_view.dart
 import 'package:tree_clinic/features/dashboard/domain/entities/shop_entity.dart';
 import 'package:tree_clinic/features/dashboard/domain/usecase/add_shop_usecase.dart';
 import 'package:tree_clinic/features/dashboard/domain/usecase/get_shop_usecase.dart';
+import 'package:tree_clinic/features/dashboard/presentation/manager/add_product_cubit/add_product_cubit.dart';
 import 'package:tree_clinic/features/dashboard/presentation/manager/add_shop_cubit/add_shop_cubit.dart';
 import 'package:tree_clinic/features/dashboard/presentation/manager/get_shop_cubit/get_shop_cubit.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/add_product_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/create_shop_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/my_shop_view.dart';
@@ -40,10 +42,19 @@ abstract class AppRouter {
   static const kDashboardView = '/DashboardView';
   static const kCreateShopView = '/CreateShopView';
   static const kMyShopView = '/MyShopView';
+  static const kaddProductView = '/AddProductView';
 
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(
+        path: kaddProductView,
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => AddProductCubit(),
+              child: const AddProductView(),
+            ),
+      ),
       GoRoute(
         path: kGetOnBoardingView,
         builder: (context, state) => const OnBoardingView(),
@@ -108,6 +119,9 @@ abstract class AppRouter {
                   create:
                       (context) =>
                           GetShopCubit(getShopUsecase: sl<GetShopUsecase>()),
+                ),
+                BlocProvider<AddProductCubit>(
+                  create: (context) => AddProductCubit(),
                 ),
               ],
               child: const DashboardView(),
