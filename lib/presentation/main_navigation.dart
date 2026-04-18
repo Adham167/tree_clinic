@@ -1,50 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tree_clinic/app/di/service_locator.dart';
-import 'package:tree_clinic/features/auth/domain/usecases/get_current_user_usecase.dart';
-import 'package:tree_clinic/presentation/manager/current_user_cubit/current_user_cubit.dart';
+import 'package:tree_clinic/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 import 'home_page.dart';
 import '../features/profile/presentation/views/profile_View.dart';
-import 'shop_page.dart';
+import '../features/shopping/presentation/views/shop_page.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
-  static _MainNavigationState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_MainNavigationState>();
-
   @override
-  _MainNavigationState createState() => _MainNavigationState();
+  State<MainNavigation> createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> {
   int index = 1;
-  final screens = [ProfileView(), HomePage(), ShopPage()];
 
-  void goToHome() {
-    setState(() {
-      index = 1;
-    });
-  }
+  final screens = const [
+    ProfileView(),
+    HomePage(),
+    ShopPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (context) => CurrentUserCubit(usecase: sl<GetCurrentUserUsecase>()),
+      create: (_) => CartCubit(),
       child: Scaffold(
         bottomNavigationBar: CurvedNavigationBar(
           index: index,
           backgroundColor: Colors.transparent,
           color: Colors.green,
-          buttonBackgroundColor: Colors.green.shade700,
+          buttonBackgroundColor: Colors.green,
           height: 60,
-          animationDuration: Duration(milliseconds: 400),
+          animationDuration: const Duration(milliseconds: 400),
           items: const [
-            Icon(Icons.person, color: Colors.white, size: 30),
-            Icon(Icons.home, color: Colors.white, size: 30),
-            Icon(Icons.store, color: Colors.white, size: 30),
+            Icon(Icons.person, color: Colors.white),
+            Icon(Icons.home, color: Colors.white),
+            Icon(Icons.store, color: Colors.white),
           ],
           onTap: (i) => setState(() => index = i),
         ),

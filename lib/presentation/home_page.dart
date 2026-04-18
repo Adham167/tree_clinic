@@ -26,7 +26,9 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    BlocProvider.of<CurrentUserCubit>(context).getCurrentUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    context.read<CurrentUserCubit>().getCurrentUser();
+  });
     super.initState();
     _controller = AnimationController(
       vsync: this,

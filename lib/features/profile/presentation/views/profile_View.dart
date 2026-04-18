@@ -13,7 +13,7 @@ class ProfileView extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            MainNavigation.of(context)?.goToHome();
+            // MainNavigation.of(context)?.goToHome();
           },
         ),
       ),
