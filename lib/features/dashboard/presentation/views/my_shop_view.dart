@@ -10,46 +10,114 @@ class MyShopView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(shop.name),
+        title: const Text("My Shop"),
+        centerTitle: true,
         backgroundColor: Colors.green,
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              shop.name,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              /// Shop Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 10,
+                      color: Colors.grey.shade300,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Shop Name
+                    Row(
+                      children: [
+                        const Icon(Icons.store, color: Colors.green, size: 28),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            shop.name,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /// Description
+                    const Text(
+                      "Description",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+
+                    const SizedBox(height: 6),
+
+                    Text(
+                      shop.description,
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                        height: 1.4,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /// Address
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on, color: Colors.green),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            shop.address,
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 30),
 
-            Text(shop.description),
-
-            const SizedBox(height: 10),
-
-            Row(
-              children: [
-                const Icon(Icons.location_on),
-                const SizedBox(width: 5),
-                Text(shop.address),
-              ],
-            ),
-
-            const Spacer(),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text("Edit Shop"),
+              /// Edit Button
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    "Edit Shop",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

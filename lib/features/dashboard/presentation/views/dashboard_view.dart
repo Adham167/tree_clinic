@@ -16,16 +16,10 @@ class DashboardView extends StatelessWidget {
     return BlocListener<GetShopCubit, GetShopState>(
       listener: (context, state) {
         if (state is GetShopSuccess) {
-          if (state.shopEntity != null) {
-            // لديه متجر → اذهب إلى MyShopView
-            GoRouter.of(
-              context,
-            ).push(AppRouter.kMyShopView, extra: state.shopEntity);
-          } else {
-            // لا يوجد متجر → اذهب إلى CreateShopView
-            GoRouter.of(context).push(AppRouter.kCreateShopView);
-          }
-        } else if (state is GetShopFailure) {
+          GoRouter.of(
+            context,
+          ).push(AppRouter.kMyShopView, extra: state.shopEntity);
+                } else if (state is GetShopFailure) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.errMessage)));
