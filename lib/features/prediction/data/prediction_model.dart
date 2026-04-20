@@ -5,21 +5,21 @@ class PredictionModel {
   final String status;
 
   // Details
-  final String cause;
-  final String description;
   final String name;
   final String scientificName;
   final String type;
+  final String description;
 
+  final List<String> cause;
   final List<String> prevention;
 
   // Irrigation
-  final List<String> bestPractices;
   final String diseaseBehavior;
-  final List<Map<String, dynamic>> temperatureBased;
+  final List<String> bestPractices;
+  final List<Map<String, dynamic>> recommendationsByCondition;
 
   // Treatment
-  final String applicationNotes;
+  final List<String> applicationNotes;
   final List<String> chemical;
   final List<String> organic;
 
@@ -28,15 +28,15 @@ class PredictionModel {
     required this.crop,
     required this.disease,
     required this.status,
-    required this.cause,
-    required this.description,
     required this.name,
     required this.scientificName,
     required this.type,
+    required this.description,
+    required this.cause,
     required this.prevention,
-    required this.bestPractices,
     required this.diseaseBehavior,
-    required this.temperatureBased,
+    required this.bestPractices,
+    required this.recommendationsByCondition,
     required this.applicationNotes,
     required this.chemical,
     required this.organic,
@@ -53,49 +53,25 @@ class PredictionModel {
       disease: json['disease'],
       status: json['status'],
 
-      cause: details['cause'],
-      description: details['description'],
-      name: details['name'],
+      name: details['disease_name'],
       scientificName: details['scientific_name'],
       type: details['type'],
+      description: details['description'],
+
+      cause: List<String>.from(details['cause']),
       prevention: List<String>.from(details['prevention']),
 
-      bestPractices: List<String>.from(irrigation['best_practices']),
       diseaseBehavior: irrigation['disease_behavior'],
-      temperatureBased: List<Map<String, dynamic>>.from(
-        irrigation['temperature_based'],
+      bestPractices: List<String>.from(irrigation['best_practices']),
+      recommendationsByCondition:
+          List<Map<String, dynamic>>.from(
+        irrigation['recommendations_by_condition'],
       ),
 
-      applicationNotes: treatment['application_notes'],
+      applicationNotes:
+          List<String>.from(treatment['application_notes']),
       chemical: List<String>.from(treatment['chemical']),
       organic: List<String>.from(treatment['organic']),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "confidence": confidence,
-      "crop": crop,
-      "disease": disease,
-      "status": status,
-      "details": {
-        "cause": cause,
-        "description": description,
-        "name": name,
-        "scientific_name": scientificName,
-        "type": type,
-        "prevention": prevention,
-        "irrigation": {
-          "best_practices": bestPractices,
-          "disease_behavior": diseaseBehavior,
-          "temperature_based": temperatureBased,
-        },
-        "treatment": {
-          "application_notes": applicationNotes,
-          "chemical": chemical,
-          "organic": organic,
-        },
-      },
-    };
   }
 }
