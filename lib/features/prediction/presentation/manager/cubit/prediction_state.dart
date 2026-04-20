@@ -1,20 +1,25 @@
 part of 'prediction_cubit.dart';
 
-@immutable
-sealed class PredictionState {}
-
-final class PredictionInitial extends PredictionState {}
-
-final class PredictionLoading extends PredictionState {}
-
-final class PredictionFailure extends PredictionState {
-  final String errMessage;
-
-  PredictionFailure({required this.errMessage});
+abstract class PredictionState {
+  const PredictionState();
+  @override
+  List<Object?> get props => [];
 }
 
-final class PredictionSuccess extends PredictionState {
-  final String result;
+class PredictionInitial extends PredictionState {}
 
-  PredictionSuccess({required this.result});
+class PredictionLoading extends PredictionState {}
+
+class PredictionSuccess extends PredictionState {
+  final PredictionModel predictionModel;
+  const PredictionSuccess(this.predictionModel);
+  @override
+  List<Object?> get props => [predictionModel];
+}
+
+class PredictionFailure extends PredictionState {
+  final String errMessage;
+  const PredictionFailure(this.errMessage);
+  @override
+  List<Object?> get props => [errMessage];
 }

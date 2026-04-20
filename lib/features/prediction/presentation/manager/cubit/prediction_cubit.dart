@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
+import 'package:tree_clinic/features/prediction/data/prediction_model.dart';
 
 part 'prediction_state.dart';
 
 class PredictionCubit extends Cubit<PredictionState> {
   PredictionCubit() : super(PredictionInitial());
+
   Future<void> sendImage(String imagePath, String fruitType) async {
     emit(PredictionLoading());
 
@@ -20,10 +22,11 @@ class PredictionCubit extends Cubit<PredictionState> {
       });
 
       var response = await dio.post(url, data: formData);
-
-      emit(PredictionSuccess(result: response.data.toString()));
+      // response.data is the JSON map
+      final predictionModel = PredictionModel.fromJson(response.data);
+      emit(PredictionSuccess(predictionModel));
     } catch (e) {
-      emit(PredictionFailure(errMessage: e.toString()));
+      emit(PredictionFailure(e.toString()));
     }
   }
 }

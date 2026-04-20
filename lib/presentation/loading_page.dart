@@ -50,7 +50,7 @@ class _LoadingPageState extends State<LoadingPage>
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (_) => PredictResultPage(result: state.result),
+                builder: (_) => PredictResultPage(predictionModel:state.predictionModel ,),
               ),
             );
           } else if (state is PredictionFailure) {

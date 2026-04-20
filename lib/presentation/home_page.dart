@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/features/prediction/presentation/manager/cubit/prediction_cubit.dart';
+import 'package:tree_clinic/features/prediction/presentation/views/predict_result_page.dart';
 import 'package:tree_clinic/presentation/manager/current_user_cubit/current_user_cubit.dart';
 import 'loading_page.dart';
 
@@ -27,8 +28,8 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    context.read<CurrentUserCubit>().getCurrentUser();
-  });
+      context.read<CurrentUserCubit>().getCurrentUser();
+    });
     super.initState();
     _controller = AnimationController(
       vsync: this,
