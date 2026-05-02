@@ -7,7 +7,9 @@ import 'package:tree_clinic/features/shopping/presentation/manager/get_product_c
 import 'package:tree_clinic/features/shopping/presentation/views/widgets/product_card.dart';
 
 class ShopPage extends StatefulWidget {
-  const ShopPage({super.key});
+  final String? initialSearch;
+
+  const ShopPage({super.key, this.initialSearch});
 
   @override
   State<ShopPage> createState() => _ShopPageState();
@@ -20,9 +22,19 @@ class _ShopPageState extends State<ShopPage> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.initialSearch != null) {
+      searchController.text = widget.initialSearch!;
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+
       context.read<GetProductsCubit>().fetchAllProducts();
+
+      if (widget.initialSearch != null) {
+        setState(() {});
+      }
     });
   }
 
@@ -66,6 +78,7 @@ class _ShopPageState extends State<ShopPage> {
               onChanged: (_) => setState(() {}),
             ),
           ),
+
           SizedBox(
             height: 50,
             child: ListView(
@@ -78,7 +91,9 @@ class _ShopPageState extends State<ShopPage> {
               ],
             ),
           ),
+
           const SizedBox(height: 10),
+
           Expanded(
             child: BlocBuilder<GetProductsCubit, GetProductsState>(
               builder: (context, state) {
@@ -94,32 +109,35 @@ class _ShopPageState extends State<ShopPage> {
                   var products = state.products;
 
                   if (selectedCategory != 'All') {
-                    products =
-                        products
-                            .where((product) => product.category == selectedCategory)
-                            .toList();
+                    products = products
+                        .where((product) =>
+                            product.category == selectedCategory)
+                        .toList();
                   }
 
                   if (searchController.text.isNotEmpty) {
-                    final query = searchController.text.toLowerCase();
-                    products =
-                        products.where((product) {
-                          return product.name.toLowerCase().contains(query) ||
-                              product.tree.toLowerCase().contains(query) ||
-                              product.disease.toLowerCase().contains(query) ||
-                              product.category.toLowerCase().contains(query);
-                        }).toList();
+                    final keywords = searchController.text
+                        .toLowerCase()
+                        .split(" ");
+
+                    products = products.where((product) {
+                      return keywords.any((word) =>
+                          product.name.toLowerCase().contains(word) ||
+                          product.tree.toLowerCase().contains(word) ||
+                          product.disease.toLowerCase().contains(word) ||
+                          product.category.toLowerCase().contains(word));
+                    }).toList();
                   }
 
                   return GridView.builder(
                     padding: const EdgeInsets.all(12),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 0.72,
-                        ),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.72,
+                    ),
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       return ProductCard(product: products[index]);
