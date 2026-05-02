@@ -9,22 +9,24 @@ class ProductDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff6f7fb),
+      backgroundColor: Colors.white,
+
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 280,
             pinned: true,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: product.id,
                 child: Image.network(
                   product.image,
                   fit: BoxFit.cover,
-                  errorBuilder:
-                      (_, __, ___) =>
-                          const Center(child: Icon(Icons.image, size: 60)),
+                  errorBuilder: (_, __, ___) =>
+                      const Center(child: Icon(Icons.image, size: 60)),
                 ),
               ),
             ),
@@ -54,7 +56,7 @@ class ProductDetailsView extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
-                          color: Colors.green,
+                          color: Colors.green, // نفس الشوب
                         ),
                       ),
                     ],
@@ -62,7 +64,7 @@ class ProductDetailsView extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  // Category Chip
+                  // Chips
                   Wrap(
                     spacing: 8,
                     children: [
@@ -81,14 +83,14 @@ class ProductDetailsView extends StatelessWidget {
                     product.description,
                     style: TextStyle(
                       fontSize: 15,
-                      color: Colors.grey[700],
+                      color: Colors.grey.shade700,
                       height: 1.5,
                     ),
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Extra Info Card
+                  // Info Card
                   _infoCard(),
                 ],
               ),
@@ -103,14 +105,21 @@ class ProductDetailsView extends StatelessWidget {
     return Chip(
       label: Text(label),
       backgroundColor: Colors.green.withOpacity(0.1),
-      labelStyle: const TextStyle(color: Colors.green),
+      labelStyle: const TextStyle(
+        color: Colors.green,
+        fontWeight: FontWeight.w500,
+      ),
+      side: BorderSide(color: Colors.green.withOpacity(0.3)), // ✨ NEW
     );
   }
 
   Widget _sectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return const Text(
+      "Description",
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
@@ -120,22 +129,30 @@ class ProductDetailsView extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10),
-        ],
+
+        border: Border.all(
+          color: Colors.black.withOpacity(0.06),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             "Product Info",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.green, // ✨ NEW
+            ),
           ),
           const SizedBox(height: 12),
           _rowInfo("Tree", product.tree),
           _rowInfo("Disease", product.disease),
           _rowInfo("Category", product.category),
-          _rowInfo("Created At", product.createdAt.toString().split(" ").first),
+          _rowInfo(
+            "Created At",
+            product.createdAt.toString().split(" ").first,
+          ),
         ],
       ),
     );
@@ -147,8 +164,17 @@ class ProductDetailsView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(key, style: TextStyle(color: Colors.grey[600])),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w500)),
+          Text(
+            key,
+            style: TextStyle(color: Colors.grey.shade600),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
+          ),
         ],
       ),
     );
