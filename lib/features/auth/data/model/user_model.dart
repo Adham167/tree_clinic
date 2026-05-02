@@ -17,12 +17,16 @@ class UserModel {
 
   factory UserModel.fromJson(data) {
     return UserModel(
-      name: data['fullname'],
-      email: data['email'],
-      phone: data['phone'],
-      password: data['password'],
-      confirmPassword: data['confirmpassword'],
-      type: data['type'],
+      name: data['fullname'] ?? '',
+      email: data['email'] ?? '',
+      phone: data['phone'] ?? '',
+      password: data['password'] ?? '',
+      confirmPassword: data['confirmpassword'] ?? '',
+      type: data['type'] ?? 'Farmer',
     );
+  }
+
+  Map<String, dynamic> toProfileJson() {
+    return {'fullname': name, 'email': email, 'phone': phone, 'type': type};
   }
 }

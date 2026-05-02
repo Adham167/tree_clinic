@@ -3,5 +3,9 @@ class OnBoardingModel {
   final String title;
   final String description;
 
-  const OnBoardingModel({required this.image, required this.title, required this.description});
+  const OnBoardingModel({
+    required this.image,
+    required this.title,
+    required this.description,
+  });
 }

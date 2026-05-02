@@ -43,35 +43,38 @@ class PredictionModel {
   });
 
   factory PredictionModel.fromJson(Map<String, dynamic> json) {
-    final details = json['details'];
-    final irrigation = details['irrigation'];
-    final treatment = details['treatment'];
+    final details = (json['details'] as Map?) ?? const {};
+    final irrigation = (details['irrigation'] as Map?) ?? const {};
+    final treatment = (details['treatment'] as Map?) ?? const {};
 
     return PredictionModel(
-      confidence: json['confidence'],
-      crop: json['crop'],
-      disease: json['disease'],
-      status: json['status'],
+      confidence: ((json['confidence'] ?? 0) as num).toDouble(),
+      crop: json['crop'] ?? '',
+      disease: json['disease'] ?? '',
+      status: json['status'] ?? '',
 
-      name: details['disease_name'],
-      scientificName: details['scientific_name'],
-      type: details['type'],
-      description: details['description'],
+      name: details['disease_name'] ?? '',
+      scientificName: details['scientific_name'] ?? '',
+      type: details['type'] ?? '',
+      description: details['description'] ?? '',
 
-      cause: List<String>.from(details['cause']),
-      prevention: List<String>.from(details['prevention']),
+      cause: _stringList(details['cause']),
+      prevention: _stringList(details['prevention']),
 
-      diseaseBehavior: irrigation['disease_behavior'],
-      bestPractices: List<String>.from(irrigation['best_practices']),
-      recommendationsByCondition:
-          List<Map<String, dynamic>>.from(
-        irrigation['recommendations_by_condition'],
+      diseaseBehavior: irrigation['disease_behavior'] ?? '',
+      bestPractices: _stringList(irrigation['best_practices']),
+      recommendationsByCondition: List<Map<String, dynamic>>.from(
+        irrigation['recommendations_by_condition'] ?? const [],
       ),
 
-      applicationNotes:
-          List<String>.from(treatment['application_notes']),
-      chemical: List<String>.from(treatment['chemical']),
-      organic: List<String>.from(treatment['organic']),
+      applicationNotes: _stringList(treatment['application_notes']),
+      chemical: _stringList(treatment['chemical']),
+      organic: _stringList(treatment['organic']),
     );
+  }
+
+  static List<String> _stringList(dynamic value) {
+    if (value is! List) return const [];
+    return value.map((item) => item.toString()).toList();
   }
 }

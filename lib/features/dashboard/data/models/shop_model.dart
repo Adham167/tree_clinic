@@ -20,6 +20,7 @@ class ShopModel {
   });
 
   factory ShopModel.fromJson(Map<String, dynamic> json, String docId) {
+    final createdAtValue = json['createdAt'];
     return ShopModel(
       id: docId,
       ownerId: json['ownerId'] ?? '',
@@ -27,7 +28,10 @@ class ShopModel {
       description: json['description'] ?? '',
       image: json['image'] ?? '',
       address: json['address'] ?? '',
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt:
+          createdAtValue is String
+              ? DateTime.tryParse(createdAtValue) ?? DateTime.now()
+              : DateTime.now(),
     );
   }
   factory ShopModel.fromEntity(ShopEntity entity) {

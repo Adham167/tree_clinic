@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tree_clinic/app/di/service_locator.dart';
@@ -21,7 +22,12 @@ import 'package:tree_clinic/features/dashboard/presentation/manager/get_shop_cub
 import 'package:tree_clinic/features/dashboard/presentation/views/add_product_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/create_shop_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/dashboard_view.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/manage_products_view.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/merchant_order_requests_view.dart';
 import 'package:tree_clinic/features/dashboard/presentation/views/my_shop_view.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/sales_analytics_view.dart';
+import 'package:tree_clinic/features/shopping/data/model/product_model.dart';
+import 'package:tree_clinic/features/shopping/presentation/views/product_details_view.dart';
 import 'package:tree_clinic/presentation/main_navigation.dart';
 import 'package:tree_clinic/presentation/views/on_boarding_view.dart';
 import 'package:tree_clinic/presentation/views/splash_view.dart';
@@ -42,21 +48,71 @@ abstract class AppRouter {
   static const kCreateShopView = '/CreateShopView';
   static const kMyShopView = '/MyShopView';
   static const kaddProductView = '/AddProductView';
+  static const kManageProductsView = '/ManageProductsView';
+  static const kSalesAnalyticsView = '/SalesAnalyticsView';
+  static const kMerchantOrderRequestsView = '/MerchantOrderRequestsView';
+  static const kProductDetailsView = '/ProductDetailsView';
+  static const _authOnlyPaths = {
+    kGetOnBoardingView,
+    kAuthCoice,
+    kRegisterView,
+    kLoginView,
+    kSignUpView,
+    kForgotPassword,
+    kNewPasswordView,
+    kSuccessResetPassword,
+    kSucessSignUp,
+  };
+  static const _protectedPaths = {
+    kMainNavigation,
+    kDashboardView,
+    kCreateShopView,
+    kMyShopView,
+    kaddProductView,
+    kManageProductsView,
+    kSalesAnalyticsView,
+    kMerchantOrderRequestsView,
+  };
 
   static final router = GoRouter(
+    redirect: (context, state) {
+      final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+      final currentPath = state.matchedLocation;
+
+      if (isLoggedIn && _authOnlyPaths.contains(currentPath)) {
+        return kMainNavigation;
+      }
+
+      if (!isLoggedIn && _protectedPaths.contains(currentPath)) {
+        return kAuthCoice;
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
       GoRoute(
         path: kaddProductView,
-        builder:
-            (context, state) => BlocProvider(
-              create: (context) => AddProductCubit(),
-              child: const AddProductView(),
-            ),
+        builder: (context, state) {
+          final product =
+              state.extra is ProductModel ? state.extra as ProductModel : null;
+
+          return BlocProvider(
+            create: (context) => AddProductCubit(),
+            child: AddProductView(initialProduct: product),
+          );
+        },
       ),
       GoRoute(
         path: kGetOnBoardingView,
         builder: (context, state) => const OnBoardingView(),
+      ),
+      GoRoute(
+        path: kProductDetailsView,
+        builder: (context, state) {
+          final product = state.extra as ProductModel;
+          return ProductDetailsView(product: product);
+        },
       ),
       GoRoute(
         path: kLoginView,
@@ -83,25 +139,28 @@ abstract class AppRouter {
             ),
       ),
 
-
       GoRoute(
         path: kCreateShopView,
-        builder:
-            (context, state) => MultiBlocProvider(
-              providers: [
-                BlocProvider<AddShopCubit>(
-                  create:
-                      (context) =>
-                          AddShopCubit(addShopUsecase: sl<AddShopUsecase>()),
-                ),
-                BlocProvider<GetShopCubit>(
-                  create:
-                      (context) =>
-                          GetShopCubit(getShopUsecase: sl<GetShopUsecase>()),
-                ),
-              ],
-              child: const CreateShopView(),
-            ),
+        builder: (context, state) {
+          final shop =
+              state.extra is ShopEntity ? state.extra as ShopEntity : null;
+
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<AddShopCubit>(
+                create:
+                    (context) =>
+                        AddShopCubit(addShopUsecase: sl<AddShopUsecase>()),
+              ),
+              BlocProvider<GetShopCubit>(
+                create:
+                    (context) =>
+                        GetShopCubit(getShopUsecase: sl<GetShopUsecase>()),
+              ),
+            ],
+            child: CreateShopView(initialShop: shop),
+          );
+        },
       ),
       GoRoute(
         path: kDashboardView,
@@ -130,7 +189,38 @@ abstract class AppRouter {
         builder: (context, state) {
           final shop = state.extra as ShopEntity;
 
-          return MyShopView(shop: shop);
+          return BlocProvider(
+            create:
+                (context) => AddShopCubit(addShopUsecase: sl<AddShopUsecase>()),
+            child: MyShopView(shop: shop),
+          );
+        },
+      ),
+      GoRoute(
+        path: kManageProductsView,
+        builder: (context, state) {
+          final shop = state.extra as ShopEntity;
+
+          return BlocProvider(
+            create: (context) => AddProductCubit(),
+            child: ManageProductsView(shop: shop),
+          );
+        },
+      ),
+      GoRoute(
+        path: kSalesAnalyticsView,
+        builder: (context, state) {
+          final shop = state.extra as ShopEntity;
+
+          return SalesAnalyticsView(shop: shop);
+        },
+      ),
+      GoRoute(
+        path: kMerchantOrderRequestsView,
+        builder: (context, state) {
+          final shop = state.extra as ShopEntity;
+
+          return MerchantOrderRequestsView(shop: shop);
         },
       ),
       GoRoute(

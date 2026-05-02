@@ -20,8 +20,31 @@ class ShopRepoImpl implements ShopRepo {
       (model) => Right(model?.toEntity()), // افترض وجود toEntity()
     );
   }
+
   @override
-Future<Either<Failure, void>> addProduct(ProductModel product) async {
-  return await sl<ShopFirebaseService>().addProduct(product);
-}
+  Future<Either<Failure, void>> deleteShop(String shopId) async {
+    return await sl<ShopFirebaseService>().deleteShop(shopId);
+  }
+
+  @override
+  Future<Either<Failure, void>> addProduct(ProductModel product) async {
+    return await sl<ShopFirebaseService>().addProduct(product);
+  }
+
+  @override
+  Future<Either<Failure, List<ProductModel>>> getProductsForShop(
+    String shopId,
+  ) async {
+    return await sl<ShopFirebaseService>().getProductsForShop(shopId);
+  }
+
+  @override
+  Future<Either<Failure, void>> updateProduct(ProductModel product) async {
+    return await sl<ShopFirebaseService>().updateProduct(product);
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteProduct(String productId) async {
+    return await sl<ShopFirebaseService>().deleteProduct(productId);
+  }
 }

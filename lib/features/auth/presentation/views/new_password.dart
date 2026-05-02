@@ -30,7 +30,7 @@ class NewPasswordView extends StatelessWidget {
             Text("Password", style: AppStyles.styleRegular16),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: CustomFormTextField(label: "Password",),
+              child: CustomFormTextField(label: "Password"),
             ),
             Text("Confirm Password", style: AppStyles.styleRegular16),
             Padding(

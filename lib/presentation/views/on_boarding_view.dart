@@ -46,8 +46,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         floatingActionButton: BlocBuilder<OnboardingCubit, OnboardingState>(
           builder: (context, state) {
             return CustomFloatingButton(
-              ontap:
-                  () => context.read<OnboardingCubit>().nextPage(context),
+              ontap: () => context.read<OnboardingCubit>().nextPage(context),
             );
           },
         ),

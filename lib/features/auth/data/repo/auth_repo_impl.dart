@@ -17,6 +17,11 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
+  Future<Either> signInWithGoogle() async {
+    return await sl<AuthFirebaseService>().signInWithGoogle();
+  }
+
+  @override
   Future<Either<dynamic, dynamic>> getCurrentUser() async {
     return await sl<AuthFirebaseService>().getCurrentUser();
   }

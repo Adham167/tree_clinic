@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/app_colors.dart';
 import 'package:tree_clinic/core/constants/custom_app_bar.dart';
- import 'package:tree_clinic/features/auth/presentation/widgets/custom_button.dart';
+import 'package:tree_clinic/features/auth/presentation/widgets/custom_button.dart';
 
 class PasswordReset extends StatelessWidget {
   const PasswordReset({super.key});

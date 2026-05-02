@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class InfoCardWidget extends StatelessWidget {
@@ -26,15 +25,17 @@ class InfoCardWidget extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.green),
             const SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(value, style: const TextStyle(color: Colors.grey)),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(value, style: const TextStyle(color: Colors.grey)),
+                ],
+              ),
             ),
           ],
         ),

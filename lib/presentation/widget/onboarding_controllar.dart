@@ -26,9 +26,7 @@ class OnboardingControllar extends StatelessWidget {
               width: currentIndex == index ? 30 : 10,
               height: 4,
               decoration: BoxDecoration(
-                color: currentIndex == index
-                    ? Colors.black
-                    : Colors.blueGrey,
+                color: currentIndex == index ? Colors.black : Colors.blueGrey,
                 borderRadius: BorderRadius.circular(16),
               ),
             ),

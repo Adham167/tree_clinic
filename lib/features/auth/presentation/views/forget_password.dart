@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tree_clinic/core/constants/app_colors.dart';
 import 'package:tree_clinic/core/constants/app_styles.dart';
 import 'package:tree_clinic/core/constants/custom_app_bar.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
+import 'package:tree_clinic/core/widgets/auth_language_button.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/custom_button.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/custom_text_field.dart';
 
@@ -11,21 +13,30 @@ class ForgotPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
-      appBar: CustomAppBar(height: 120),
+      appBar: const CustomAppBar(
+        height: 120,
+        action: Padding(
+          padding: EdgeInsetsDirectional.only(end: 12),
+          child: Center(child: AuthLanguageButton()),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
           shrinkWrap:
               true, // Tells the ListView to be only as tall as its children
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: [
-            Text("Forget Password", style: TextStyle(fontSize: 30)),
-            SizedBox(height: 20),
             Text(
-              "Please enter you email to reset the passeord",
+              context.tr("Forgot Password"),
+              style: const TextStyle(fontSize: 30),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              context.tr("Please enter your email to reset the password."),
               style: TextStyle(color: AppColors.kseconderyColor, fontSize: 15),
             ),
-            Text("Your Email", style: AppStyles.styleRegular16),
+            Text(context.tr("Your Email"), style: AppStyles.styleRegular16),
 
             Padding(
               padding: const EdgeInsets.only(top: 30),
@@ -40,7 +51,7 @@ class ForgotPassword extends StatelessWidget {
                   //   MaterialPageRoute(builder: (context) => OTPScreen()),
                   // );
                 },
-                child: CustomButton(name: "Reset Password"),
+                child: CustomButton(name: context.tr("Reset Password")),
               ),
             ),
           ],

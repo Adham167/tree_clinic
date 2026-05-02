@@ -7,6 +7,8 @@ import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/app_colors.dart';
 import 'package:tree_clinic/core/constants/app_styles.dart';
 import 'package:tree_clinic/core/constants/assets.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
+import 'package:tree_clinic/core/widgets/auth_language_button.dart';
 import 'package:tree_clinic/core/widgets/custom_reactive_button.dart';
 import 'package:tree_clinic/features/auth/data/model/user_model.dart';
 import 'package:tree_clinic/features/auth/domain/usecases/signup_usecase.dart';
@@ -41,10 +43,10 @@ class _SignUpViewState extends State<SignUpView> {
         if (state is ButtonFailure) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.errMessage)));
+          ).showSnackBar(SnackBar(content: Text(context.tr(state.errMessage))));
           log(state.errMessage);
         } else if (state is ButtonSuccess) {
-          GoRouter.of(context).push(AppRouter.kLoginView);
+          GoRouter.of(context).go(AppRouter.kMainNavigation);
         }
       },
       child: BlocBuilder<SignupValidationCubit, SignupValidationState>(
@@ -74,6 +76,15 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                   ),
                 ),
+                const SafeArea(
+                  child: Align(
+                    alignment: AlignmentDirectional.topEnd,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(top: 16, end: 16),
+                      child: AuthLanguageButton(onDarkBackground: true),
+                    ),
+                  ),
+                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
@@ -93,15 +104,15 @@ class _SignUpViewState extends State<SignUpView> {
                           children: [
                             SizedBox(height: 16),
                             Text(
-                              "Create Account",
+                              context.tr("Create Account"),
                               style: AppStyles.styleBold24.copyWith(
                                 color: AppColors.lightPrimary,
                               ),
                             ),
                             const SizedBox(height: 10),
 
-                            const Text(
-                              "Register now and enjoy the app",
+                            Text(
+                              context.tr("Register now and enjoy the app"),
                               style: AppStyles.styleRegular16,
                             ),
 
@@ -183,7 +194,7 @@ class _SignUpViewState extends State<SignUpView> {
                                   vertical: 8,
                                 ),
                                 child: Text(
-                                  state.errMessage,
+                                  context.tr(state.errMessage),
                                   style: TextStyle(color: Colors.red),
                                 ),
                               ),
@@ -192,6 +203,21 @@ class _SignUpViewState extends State<SignUpView> {
                               child: CustomReactiveButton(
                                 onPressed: () {
                                   if (globalKey.currentState!.validate()) {
+                                    if (userModel.password !=
+                                        userModel.confirmPassword) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            context.tr(
+                                              "Passwords do not match.",
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                      return;
+                                    }
                                     BlocProvider.of<ButtonCubit>(
                                       context,
                                     ).excute(
@@ -208,22 +234,23 @@ class _SignUpViewState extends State<SignUpView> {
                                     );
                                   }
                                 },
-                                title: 'Register',
+                                title: context.tr('Register'),
                               ),
                             ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Already have an account? "),
+                                Text(context.tr("Already have an account?")),
+                                const SizedBox(width: 4),
                                 TextButton(
                                   onPressed: () {
                                     GoRouter.of(
                                       context,
                                     ).pushReplacement(AppRouter.kLoginView);
                                   },
-                                  child: const Text(
-                                    "Login",
+                                  child: Text(
+                                    context.tr("Login"),
                                     style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold,

@@ -17,14 +17,14 @@ class SignupValidationCubit extends Cubit<SignupValidationState> {
       return;
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(email)) {
-      emit(SignupValidationFailure(errMessage: "In valid email"));
+      emit(SignupValidationFailure(errMessage: "Invalid email"));
       return;
     }
     if (phone.isEmpty || phone.length < 8) {
-      emit(SignupValidationFailure(errMessage: "In valid phone number"));
+      emit(SignupValidationFailure(errMessage: "Invalid phone number"));
       return;
     }
-    if (phone.isEmpty || phone.length < 8) {
+    if (password.length < 6) {
       emit(
         SignupValidationFailure(
           errMessage: "Password must be at least 6 characters",

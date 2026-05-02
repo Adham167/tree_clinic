@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
 
 class CustomFormTextField extends StatelessWidget {
   const CustomFormTextField({
@@ -21,16 +22,19 @@ class CustomFormTextField extends StatelessWidget {
       validator: (value) {
         if (isEmailField!) {
           if (!isValidEmail(value!)) {
-            return 'Email is Invalid ';
+            return context.tr('Email is Invalid');
           }
         } else if (value!.isEmpty) {
-          return 'This Field is required';
+          return context.tr('This Field is required');
         }
         return null;
       },
       obscureText: obscureText!,
       onChanged: onChanged,
-      decoration: InputDecoration(suffixIcon: iconButton, hintText: label),
+      decoration: InputDecoration(
+        suffixIcon: iconButton,
+        hintText: context.tr(label),
+      ),
     );
   }
 
@@ -63,7 +67,7 @@ class AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.green),
         suffixIcon: suffix,
-        labelText: label,
+        labelText: context.tr(label),
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),

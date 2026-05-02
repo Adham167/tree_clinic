@@ -10,6 +10,7 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
   CurrentUserCubit({required this.usecase}) : super(CurrentUserInitial());
 
   void getCurrentUser({dynamic param}) async {
+    emit(CurrentUserLoading());
     var returnedData = await usecase.call(params: param);
     returnedData.fold(
       (error) => emit(CurrentUserFailure(errMessage: error.toString())),

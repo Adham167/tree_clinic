@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/assets.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
+import 'package:tree_clinic/core/widgets/auth_language_button.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/bottom_wave_clipper.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/floating_auth_button.dart';
 
@@ -45,7 +47,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen>
   }
 
   void openRegister() {
- 
     GoRouter.of(context).push(AppRouter.kSignUpView);
   }
 
@@ -75,6 +76,16 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen>
             ),
           ),
 
+          const SafeArea(
+            child: Align(
+              alignment: AlignmentDirectional.topEnd,
+              child: Padding(
+                padding: EdgeInsetsDirectional.only(top: 18, end: 18),
+                child: AuthLanguageButton(onDarkBackground: true),
+              ),
+            ),
+          ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Column(
@@ -82,8 +93,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen>
               children: [
                 const SizedBox(height: 90),
 
-                const Text(
-                  "Welcome ",
+                Text(
+                  context.tr("Welcome"),
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -93,9 +104,11 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen>
 
                 const SizedBox(height: 15),
 
-                const Text(
-                  "Login or create a new account to start using\n"
-                  "the smart agriculture platform.",
+                Text(
+                  context.tr(
+                    "Login or create a new account to start using\n"
+                    "the smart agriculture platform.",
+                  ),
                   style: TextStyle(
                     fontSize: 17,
                     height: 1.6,
@@ -135,12 +148,12 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen>
                   children: [
                     FloatingAuthButton(
                       icon: Icons.login,
-                      text: "Login",
+                      text: context.tr("Login"),
                       onTap: openLogin,
                     ),
                     FloatingAuthButton(
                       icon: Icons.app_registration,
-                      text: "Register",
+                      text: context.tr("Register"),
                       onTap: openRegister,
                     ),
                   ],

@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/app_colors.dart';
 import 'package:tree_clinic/core/constants/assets.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
+import 'package:tree_clinic/core/widgets/auth_language_button.dart';
 import 'package:tree_clinic/core/widgets/custom_reactive_button.dart';
 import 'package:tree_clinic/features/auth/data/model/user_signIn_model.dart';
+import 'package:tree_clinic/features/auth/domain/usecases/google_signin_usecase.dart';
 import 'package:tree_clinic/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/button_cubit/button_cubit.dart';
 import 'package:tree_clinic/features/auth/presentation/manager/signin_validation_cubit/signin_validation_cubit.dart';
@@ -30,9 +33,9 @@ class _LoginViewState extends State<LoginView> {
         if (state is ButtonFailure) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.errMessage)));
+          ).showSnackBar(SnackBar(content: Text(context.tr(state.errMessage))));
         } else if (state is ButtonSuccess) {
-          GoRouter.of(context).pushReplacement(AppRouter.kMainNavigation);
+          GoRouter.of(context).go(AppRouter.kMainNavigation);
         }
       },
       child: BlocBuilder<SigninValidationCubit, SigninValidationState>(
@@ -62,6 +65,15 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
+                const SafeArea(
+                  child: Align(
+                    alignment: AlignmentDirectional.topEnd,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(top: 16, end: 16),
+                      child: AuthLanguageButton(onDarkBackground: true),
+                    ),
+                  ),
+                ),
 
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -82,8 +94,8 @@ class _LoginViewState extends State<LoginView> {
                           children: [
                             const SizedBox(height: 20),
 
-                            const Text(
-                              "Welcome Back",
+                            Text(
+                              context.tr("Welcome Back"),
                               style: TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
@@ -125,7 +137,7 @@ class _LoginViewState extends State<LoginView> {
                                   vertical: 8,
                                 ),
                                 child: Text(
-                                  state.errMessage,
+                                  context.tr(state.errMessage),
                                   style: TextStyle(color: Colors.red),
                                 ),
                               ),
@@ -146,7 +158,7 @@ class _LoginViewState extends State<LoginView> {
                                       ).push(AppRouter.kForgotPassword),
 
                                   child: Text(
-                                    "Forgot Password?",
+                                    context.tr("Forgot Password?"),
                                     style: TextStyle(
                                       color: AppColors.kmainColor,
                                     ),
@@ -167,7 +179,52 @@ class _LoginViewState extends State<LoginView> {
                                   );
                                 }
                               },
-                              title: "Continue",
+                              title: context.tr("Continue"),
+                            ),
+                            const SizedBox(height: 18),
+                            Row(
+                              children: [
+                                const Expanded(child: Divider()),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  child: Text(
+                                    context.tr("or"),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                ),
+                                const Expanded(child: Divider()),
+                              ],
+                            ),
+                            const SizedBox(height: 18),
+                            CustomReactiveButton(
+                              color: Colors.white,
+                              onPressed: () {
+                                BlocProvider.of<ButtonCubit>(
+                                  context,
+                                ).excute(usecase: GoogleSigninUsecase());
+                              },
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    Assets.imagesGoogleIcon,
+                                    width: 22,
+                                    height: 22,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    context.tr("Continue with Google"),
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

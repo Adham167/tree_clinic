@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tree_clinic/core/constants/app_colors.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/features/auth/presentation/widgets/custom_button.dart';
 
 class SuccessResetPassword extends StatelessWidget {
-   const SuccessResetPassword({super.key});
+  const SuccessResetPassword({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +13,7 @@ class SuccessResetPassword extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            SizedBox(height: 250),
+            const SizedBox(height: 250),
             Center(
               child: Image.asset(
                 "assets/images/Screenshot 2025-10-27 172055.png",
@@ -20,10 +21,13 @@ class SuccessResetPassword extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: Text("Successful", style: TextStyle(fontSize: 30)),
+              child: Text(
+                context.tr("Successful"),
+                style: const TextStyle(fontSize: 30),
+              ),
             ),
-            SizedBox(height: 50),
-            CustomButton(name: "Continue"),
+            const SizedBox(height: 50),
+            CustomButton(name: context.tr("Continue")),
           ],
         ),
       ),

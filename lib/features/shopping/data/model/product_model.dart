@@ -6,6 +6,7 @@ class ProductModel {
   final String description;
   final String image;
   final double price;
+  final String tree;
   final String disease;
   final String category;
   final DateTime createdAt;
@@ -17,6 +18,7 @@ class ProductModel {
     required this.description,
     required this.image,
     required this.price,
+    required this.tree,
     required this.disease,
     required this.category,
     required this.createdAt,
@@ -29,6 +31,7 @@ class ProductModel {
     String? description,
     String? image,
     double? price,
+    String? tree,
     String? disease,
     String? category,
     DateTime? createdAt,
@@ -40,6 +43,7 @@ class ProductModel {
       description: description ?? this.description,
       image: image ?? this.image,
       price: price ?? this.price,
+      tree: tree ?? this.tree,
       disease: disease ?? this.disease,
       category: category ?? this.category,
       createdAt: createdAt ?? this.createdAt,
@@ -47,28 +51,34 @@ class ProductModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'shopId': shopId,
-        'name': name,
-        'description': description,
-        'image': image,
-        'price': price,
-        'disease': disease,
-        'category': category,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'shopId': shopId,
+    'name': name,
+    'description': description,
+    'image': image,
+    'price': price,
+    'tree': tree,
+    'disease': disease,
+    'category': category,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   factory ProductModel.fromJson(Map<String, dynamic> json, String docId) {
+    final createdAtValue = json['createdAt'];
     return ProductModel(
       id: docId,
-      shopId: json['shopId'],
-      name: json['name'],
-      description: json['description'],
-      image: json['image'],
-      price: (json['price'] as num).toDouble(),
-      disease: json['disease'],
-      category: json['category'],
-      createdAt: DateTime.parse(json['createdAt']),
+      shopId: json['shopId'] ?? '',
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      image: json['image'] ?? '',
+      price: ((json['price'] ?? 0) as num).toDouble(),
+      tree: json['tree'] ?? '',
+      disease: json['disease'] ?? '',
+      category: json['category'] ?? '',
+      createdAt:
+          createdAtValue is String
+              ? DateTime.tryParse(createdAtValue) ?? DateTime.now()
+              : DateTime.now(),
     );
   }
 }

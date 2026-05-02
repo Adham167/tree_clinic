@@ -5,6 +5,9 @@ class CartItem {
   final String name;
   final double price;
   final String image;
+  final String shopId;
+  final String tree;
+  final String disease;
   int quantity;
 
   CartItem({
@@ -12,6 +15,9 @@ class CartItem {
     required this.name,
     required this.price,
     required this.image,
+    this.shopId = '',
+    this.tree = '',
+    this.disease = '',
     this.quantity = 1,
   });
 
@@ -19,10 +25,13 @@ class CartItem {
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      id: json['id'],
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
-      image: json['image'],
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      price: ((json['price'] ?? 0) as num).toDouble(),
+      image: json['image'] ?? '',
+      shopId: json['shopId'] ?? '',
+      tree: json['tree'] ?? '',
+      disease: json['disease'] ?? '',
       quantity: json['quantity'] ?? 1,
     );
   }
@@ -33,6 +42,9 @@ class CartItem {
       'name': name,
       'price': price,
       'image': image,
+      'shopId': shopId,
+      'tree': tree,
+      'disease': disease,
       'quantity': quantity,
     };
   }
@@ -42,6 +54,9 @@ class CartItem {
     String? name,
     double? price,
     String? image,
+    String? shopId,
+    String? tree,
+    String? disease,
     int? quantity,
   }) {
     return CartItem(
@@ -49,6 +64,9 @@ class CartItem {
       name: name ?? this.name,
       price: price ?? this.price,
       image: image ?? this.image,
+      shopId: shopId ?? this.shopId,
+      tree: tree ?? this.tree,
+      disease: disease ?? this.disease,
       quantity: quantity ?? this.quantity,
     );
   }

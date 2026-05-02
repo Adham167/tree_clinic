@@ -1,29 +1,32 @@
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/features/prediction/presentation/manager/cubit/prediction_cubit.dart';
-import 'package:tree_clinic/features/prediction/presentation/views/predict_result_page.dart';
+import 'package:tree_clinic/presentation/loading_page.dart';
 import 'package:tree_clinic/presentation/manager/current_user_cubit/current_user_cubit.dart';
-import 'loading_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  String selectedFruit = "apple";
+  String selectedFruit = 'apple';
   File? imageFile;
   final picker = ImagePicker();
 
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
+  late final AnimationController _controller;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
@@ -33,19 +36,29 @@ class _HomePageState extends State<HomePage>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 700),
     );
     _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
     _controller.forward();
   }
 
-  Future pickCamera() async {
-    final picked = await picker.pickImage(source: ImageSource.camera);
+  Future<void> pickCamera() async {
+    final picked = await picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 1600,
+      maxHeight: 1600,
+      imageQuality: 85,
+    );
     if (picked != null) setState(() => imageFile = File(picked.path));
   }
 
-  Future pickGallery() async {
-    final picked = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> pickGallery() async {
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1600,
+      maxHeight: 1600,
+      imageQuality: 85,
+    );
     if (picked != null) setState(() => imageFile = File(picked.path));
   }
 
@@ -70,17 +83,17 @@ class _HomePageState extends State<HomePage>
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.green.withOpacity(0.4),
+                    color: Colors.green.withValues(alpha: 0.4),
                     blurRadius: 4,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
               child: Icon(icon, color: Colors.white, size: 28),
             ),
-            SizedBox(height: 6),
+            const SizedBox(height: 6),
             Text(
-              text,
+              context.tr(text),
               style: TextStyle(
                 color: Colors.green.shade900,
                 fontWeight: FontWeight.bold,
@@ -92,24 +105,33 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  String _fruitLabel(String fruitCode) {
+    return switch (fruitCode) {
+      'apple' => context.tr('Apple'),
+      'banana' => context.tr('Banana'),
+      'guava' => context.tr('Guava'),
+      'mango' => context.tr('Mango'),
+      _ => fruitCode,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Scaffold(
         appBar: AppBar(
-          leading: SizedBox(),
-          title: Text("Home"),
+          leading: const SizedBox(),
+          title: Text(context.tr('Home')),
           backgroundColor: Colors.green,
-          actions: [DashBoardIcon()],
+          actions: const [DashBoardIcon()],
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              // Dropdown
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.green.shade100,
@@ -117,20 +139,29 @@ class _HomePageState extends State<HomePage>
                 child: DropdownButton<String>(
                   value: selectedFruit,
                   isExpanded: true,
-                  underline: SizedBox(),
+                  underline: const SizedBox(),
                   items: [
-                    DropdownMenuItem(value: "apple", child: Text("Apple")),
-                    DropdownMenuItem(value: "banana", child: Text("Banana")),
-                    DropdownMenuItem(value: "guava", child: Text("Guava")),
-                    DropdownMenuItem(value: "mango", child: Text("Mango")),
+                    DropdownMenuItem(
+                      value: 'apple',
+                      child: Text(_fruitLabel('apple')),
+                    ),
+                    DropdownMenuItem(
+                      value: 'banana',
+                      child: Text(_fruitLabel('banana')),
+                    ),
+                    DropdownMenuItem(
+                      value: 'guava',
+                      child: Text(_fruitLabel('guava')),
+                    ),
+                    DropdownMenuItem(
+                      value: 'mango',
+                      child: Text(_fruitLabel('mango')),
+                    ),
                   ],
-                  onChanged: (val) => setState(() => selectedFruit = val!),
+                  onChanged: (value) => setState(() => selectedFruit = value!),
                 ),
               ),
-
-              SizedBox(height: 20),
-
-              // Image container
+              const SizedBox(height: 20),
               Container(
                 height: 200,
                 width: double.infinity,
@@ -139,33 +170,38 @@ class _HomePageState extends State<HomePage>
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.green.withOpacity(0.2),
+                      color: Colors.green.withValues(alpha: 0.2),
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child:
                     imageFile == null
-                        ? Center(child: Text("No Image Selected"))
+                        ? Center(child: Text(context.tr('No Image Selected')))
                         : ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.file(imageFile!, fit: BoxFit.cover),
                         ),
               ),
-
-              SizedBox(height: 20),
-
-              // Buttons
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  buildButton(Icons.camera_alt, "Camera", pickCamera),
-                  buildButton(Icons.photo, "Gallery", pickGallery),
-                  buildButton(Icons.analytics, "Predict", () {
-                    BlocProvider.of<PredictionCubit>(
-                      context,
-                    ).sendImage(imageFile!.path, selectedFruit);
+                  buildButton(Icons.camera_alt, 'Camera', pickCamera),
+                  buildButton(Icons.photo, 'Gallery', pickGallery),
+                  buildButton(Icons.analytics, 'Predict', () {
+                    if (imageFile == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            context.tr('Select a leaf image first.'),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+
                     Navigator.push(
                       context,
                       PageRouteBuilder(
@@ -176,6 +212,12 @@ class _HomePageState extends State<HomePage>
                               child: child,
                             ),
                       ),
+                    );
+                    BlocProvider.of<PredictionCubit>(context).sendImage(
+                      imageFile!.path,
+                      selectedFruit,
+                      languageCode:
+                          Localizations.localeOf(context).languageCode,
                     );
                   }),
                 ],
@@ -196,22 +238,81 @@ class DashBoardIcon extends StatelessWidget {
     return BlocBuilder<CurrentUserCubit, CurrentUserState>(
       builder: (context, state) {
         if (state is CurrentUserLoading) {
-          return Center(child: Icon(Icons.error));
+          return const Center(child: Icon(Icons.error));
         } else if (state is CurrentUserSuccess) {
-          if (state.userModel.type == "Merchant") {
-            return IconButton(
-              icon: Icon(Icons.dashboard),
-              onPressed: () {
-                GoRouter.of(context).push(AppRouter.kDashboardView);
+          if (state.userModel.type == 'Merchant') {
+            final merchantId = FirebaseAuth.instance.currentUser?.uid;
+            if (merchantId == null) {
+              return IconButton(
+                icon: const Icon(Icons.dashboard),
+                onPressed: () {
+                  GoRouter.of(context).push(AppRouter.kDashboardView);
+                },
+              );
+            }
+
+            return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream:
+                  FirebaseFirestore.instance
+                      .collection('merchant_order_requests')
+                      .where('merchantId', isEqualTo: merchantId)
+                      .snapshots(),
+              builder: (context, snapshot) {
+                final pendingCount =
+                    snapshot.data?.docs
+                        .where(
+                          (doc) =>
+                              (doc.data()['status']?.toString() ?? 'pending') ==
+                              'pending',
+                        )
+                        .length ??
+                    0;
+                final badgeLabel =
+                    pendingCount > 99 ? '99+' : pendingCount.toString();
+
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.dashboard),
+                      onPressed: () {
+                        GoRouter.of(context).push(AppRouter.kDashboardView);
+                      },
+                    ),
+                    if (pendingCount > 0)
+                      PositionedDirectional(
+                        top: 6,
+                        end: 6,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Text(
+                            badgeLabel,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
               },
             );
           } else {
-            return SizedBox();
+            return const SizedBox();
           }
         } else if (state is CurrentUserFailure) {
-          return Center(child: Icon(Icons.error));
+          return const Center(child: Icon(Icons.error));
         }
-        return SizedBox();
+        return const SizedBox();
       },
     );
   }
