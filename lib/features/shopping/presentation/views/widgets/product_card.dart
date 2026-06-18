@@ -25,7 +25,9 @@ class ProductCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(AppRouter.kProductDetailsView);
+        GoRouter.of(
+          context,
+        ).push(AppRouter.kProductDetailsView, extra: product);
       },
       child: Card(
         elevation: 3,
