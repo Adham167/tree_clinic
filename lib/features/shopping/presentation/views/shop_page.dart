@@ -109,35 +109,46 @@ class _ShopPageState extends State<ShopPage> {
                   var products = state.products;
 
                   if (selectedCategory != 'All') {
-                    products = products
-                        .where((product) =>
-                            product.category == selectedCategory)
-                        .toList();
+                    products =
+                        products
+                            .where(
+                              (product) => product.category == selectedCategory,
+                            )
+                            .toList();
                   }
 
                   if (searchController.text.isNotEmpty) {
-                    final keywords = searchController.text
-                        .toLowerCase()
-                        .split(" ");
+                    final keywords =
+                        searchController.text
+                            .toLowerCase()
+                            .split(RegExp(r'\s+'))
+                            .where((e) => e.isNotEmpty)
+                            .toList();
+                    products =
+                        products.where((product) {
+                          final searchableText =
+                              [
+                                product.name,
+                                product.tree,
+                                product.disease,
+                                product.category,
+                              ].join(' ').toLowerCase();
 
-                    products = products.where((product) {
-                      return keywords.any((word) =>
-                          product.name.toLowerCase().contains(word) ||
-                          product.tree.toLowerCase().contains(word) ||
-                          product.disease.toLowerCase().contains(word) ||
-                          product.category.toLowerCase().contains(word));
-                    }).toList();
+                          return keywords.any(
+                            (word) => searchableText.contains(word),
+                          );
+                        }).toList();
                   }
 
                   return GridView.builder(
                     padding: const EdgeInsets.all(12),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.72,
-                    ),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.72,
+                        ),
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       return ProductCard(product: products[index]);

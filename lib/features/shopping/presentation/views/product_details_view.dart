@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tree_clinic/features/shopping/data/model/product_model.dart';
+import 'package:tree_clinic/features/shopping/presentation/manager/get_related_products_cubit/get_related_products_cubit.dart';
+import 'package:tree_clinic/features/shopping/presentation/views/widgets/chip_widget.dart';
+import 'package:tree_clinic/features/shopping/presentation/views/widgets/info_card_widget.dart';
+import 'package:tree_clinic/features/shopping/presentation/views/widgets/related_products_section.dart';
+import 'package:tree_clinic/features/shopping/presentation/views/widgets/section_title.dart';
 
 class ProductDetailsView extends StatelessWidget {
   final ProductModel product;
@@ -8,174 +14,102 @@ class ProductDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
+    return BlocProvider(
+      create:
+          (context) =>
+              GetRelatedProductsCubit()..fetchRelatedProducts(
+                treeName: product.tree,
+                currentProductId: product.id,
+              ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
 
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 280,
-            pinned: true,
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-
-            flexibleSpace: FlexibleSpaceBar(
-              background: Hero(
-                tag: product.id,
-                child: Image.network(
-                  product.image,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      const Center(child: Icon(Icons.image, size: 60)),
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 280,
+              pinned: true,
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+        
+              flexibleSpace: FlexibleSpaceBar(
+                background: Hero(
+                  tag: product.id,
+                  child: Image.network(
+                    product.image,
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (_, __, ___) => const Center(
+                          child: Icon(Icons.image, size: 60),
+                        ),
+                  ),
                 ),
               ),
             ),
-          ),
-
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Name + Price
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          product.name,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+        
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            product.name,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        "${product.price.toStringAsFixed(2)} EGP",
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.green, // نفس الشوب
+                        Text(
+                          "${product.price.toStringAsFixed(2)} EGP",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  // Chips
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      _chip(product.category),
-                      _chip(product.tree),
-                      _chip(product.disease),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Description
-                  _sectionTitle("Description"),
-                  const SizedBox(height: 8),
-                  Text(
-                    product.description,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey.shade700,
-                      height: 1.5,
+                      ],
                     ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Info Card
-                  _infoCard(),
-                ],
+        
+                    const SizedBox(height: 12),
+        
+                    Wrap(
+                      spacing: 8,
+                      children: [
+                        ChipWidget(label: product.category),
+                        ChipWidget(label: product.tree),
+                        ChipWidget(label: product.disease),
+                      ],
+                    ),
+        
+                    const SizedBox(height: 20),
+        
+                    SectionTitle(title: "Description"),
+                    const SizedBox(height: 8),
+                    Text(
+                      product.description,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey.shade700,
+                        height: 1.5,
+                      ),
+                    ),
+        
+                    const SizedBox(height: 20),
+        
+                    InfoCardWidget(product: product),
+                    RelatedProductsSection()
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _chip(String label) {
-    return Chip(
-      label: Text(label),
-      backgroundColor: Colors.green.withOpacity(0.1),
-      labelStyle: const TextStyle(
-        color: Colors.green,
-        fontWeight: FontWeight.w500,
-      ),
-      side: BorderSide(color: Colors.green.withOpacity(0.3)), // ✨ NEW
-    );
-  }
-
-  Widget _sectionTitle(String title) {
-    return const Text(
-      "Description",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-
-  Widget _infoCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-
-        border: Border.all(
-          color: Colors.black.withOpacity(0.06),
+          ],
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Product Info",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.green, // ✨ NEW
-            ),
-          ),
-          const SizedBox(height: 12),
-          _rowInfo("Tree", product.tree),
-          _rowInfo("Disease", product.disease),
-          _rowInfo("Category", product.category),
-          _rowInfo(
-            "Created At",
-            product.createdAt.toString().split(" ").first,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _rowInfo(String key, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            key,
-            style: TextStyle(color: Colors.grey.shade600),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.black87,
-            ),
-          ),
-        ],
       ),
     );
   }

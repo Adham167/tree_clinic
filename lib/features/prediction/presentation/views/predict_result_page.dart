@@ -99,15 +99,12 @@ class PredictResultPage extends StatelessWidget {
 
           ElevatedButton.icon(
             onPressed: () {
-              final meds = [
+              final searchQuery = [
+                predictionModel.disease,
+                predictionModel.crop,
                 ...predictionModel.chemical,
                 ...predictionModel.organic,
-              ];
-
-              final cleaned =
-                  meds.map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
-
-              final searchQuery = cleaned.take(3).join(" ");
+              ].map((e) => e.trim()).where((e) => e.isNotEmpty).join(" ");
 
               Navigator.push(
                 context,
