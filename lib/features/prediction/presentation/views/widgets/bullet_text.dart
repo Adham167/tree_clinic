@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class BulletText extends StatelessWidget {
-  const BulletText(this.text);
+  const BulletText(this.text, {super.key});
 
   final String text;
 

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class ChipWidget extends StatelessWidget {
-  const ChipWidget({required this.icon, required this.label});
+  const ChipWidget({super.key, required this.icon, required this.label});
 
   final IconData icon;
   final String label;

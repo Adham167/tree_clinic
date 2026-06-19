@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -27,9 +28,7 @@ class TreeClinic extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => AppLocaleCubit(preferences, initialLocale),
-        ),
+        BlocProvider(create: (_) => AppLocaleCubit(preferences, initialLocale)),
         BlocProvider(
           create: (_) => CurrentUserCubit(usecase: sl<GetCurrentUserUsecase>()),
         ),
@@ -40,9 +39,11 @@ class TreeClinic extends StatelessWidget {
       child: BlocBuilder<AppLocaleCubit, Locale>(
         builder: (context, locale) {
           return MaterialApp.router(
+            useInheritedMediaQuery: true,
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
             theme: LightTheme.theme,
             debugShowCheckedModeBanner: false,
-            locale: locale,
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: const [
               AppLocalizations.delegate,

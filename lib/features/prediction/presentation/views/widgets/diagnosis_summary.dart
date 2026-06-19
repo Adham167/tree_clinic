@@ -4,7 +4,7 @@ import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/features/prediction/presentation/views/widgets/chip_widget.dart';
 
 class DiagnosisSummary extends StatelessWidget {
-  const DiagnosisSummary({
+  const DiagnosisSummary({super.key, 
     required this.disease,
     required this.crop,
     required this.confidencePercent,

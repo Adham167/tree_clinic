@@ -8,7 +8,7 @@ import 'package:tree_clinic/features/prediction/presentation/views/widgets/info_
 import 'package:tree_clinic/features/prediction/presentation/views/widgets/recommendation_tile.dart';
 
 class RecommendationsSection extends StatelessWidget {
-  const RecommendationsSection({required this.predictionModel});
+  const RecommendationsSection({super.key, required this.predictionModel});
 
   final PredictionModel predictionModel;
 

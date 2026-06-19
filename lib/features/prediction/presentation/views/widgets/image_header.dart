@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tree_clinic/core/localization/localization_extensions.dart';
 
 class ImageHeader extends StatelessWidget {
-  const ImageHeader({required this.imagePath});
+  const ImageHeader({super.key, required this.imagePath});
 
   final String imagePath;
 

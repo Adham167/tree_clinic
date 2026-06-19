@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class RecommendationTile extends StatelessWidget {
-  const RecommendationTile({
+  const RecommendationTile({super.key, 
     required this.title,
     required this.icon,
     required this.children,

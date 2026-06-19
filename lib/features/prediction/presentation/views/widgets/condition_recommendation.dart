@@ -4,7 +4,7 @@ import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/features/prediction/presentation/views/widgets/bullet_text.dart';
 
 class ConditionRecommendation extends StatelessWidget {
-  const ConditionRecommendation({required this.item});
+  const ConditionRecommendation({super.key, required this.item});
 
   final Map<String, dynamic> item;
 

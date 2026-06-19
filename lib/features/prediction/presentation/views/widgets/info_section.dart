@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class InfoSection extends StatelessWidget {
-  const InfoSection({
+  const InfoSection({super.key, 
     required this.title,
     required this.icon,
     required this.children,
