@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/features/shopping/data/model/product_model.dart';
 import 'package:tree_clinic/features/shopping/presentation/manager/get_related_products_cubit/get_related_products_cubit.dart';
 import 'package:tree_clinic/features/shopping/presentation/views/widgets/chip_widget.dart';
@@ -14,6 +15,10 @@ class ProductDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final displayName = product.localizedName(languageCode);
+    final displayDescription = product.localizedDescription(languageCode);
+
     return BlocProvider(
       create:
           (context) =>
@@ -23,7 +28,6 @@ class ProductDetailsView extends StatelessWidget {
               ),
       child: Scaffold(
         backgroundColor: Colors.white,
-
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -31,7 +35,6 @@ class ProductDetailsView extends StatelessWidget {
               pinned: true,
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
-        
               flexibleSpace: FlexibleSpaceBar(
                 background: Hero(
                   tag: product.id,
@@ -39,14 +42,12 @@ class ProductDetailsView extends StatelessWidget {
                     product.image,
                     fit: BoxFit.cover,
                     errorBuilder:
-                        (_, __, ___) => const Center(
-                          child: Icon(Icons.image, size: 60),
-                        ),
+                        (_, __, ___) =>
+                            const Center(child: Icon(Icons.image, size: 60)),
                   ),
                 ),
               ),
             ),
-        
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -58,7 +59,7 @@ class ProductDetailsView extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            product.name,
+                            displayName,
                             style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -75,9 +76,7 @@ class ProductDetailsView extends StatelessWidget {
                         ),
                       ],
                     ),
-        
                     const SizedBox(height: 12),
-        
                     Wrap(
                       spacing: 8,
                       children: [
@@ -86,24 +85,20 @@ class ProductDetailsView extends StatelessWidget {
                         ChipWidget(label: product.disease),
                       ],
                     ),
-        
                     const SizedBox(height: 20),
-        
-                    SectionTitle(title: "Description"),
+                    SectionTitle(title: context.tr('Description')),
                     const SizedBox(height: 8),
                     Text(
-                      product.description,
+                      displayDescription,
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey.shade700,
                         height: 1.5,
                       ),
                     ),
-        
                     const SizedBox(height: 20),
-        
                     InfoCardWidget(product: product),
-                    RelatedProductsSection()
+                    RelatedProductsSection(),
                   ],
                 ),
               ),

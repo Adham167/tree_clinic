@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/features/shopping/presentation/manager/get_related_products_cubit/get_related_products_cubit.dart';
 import 'package:tree_clinic/features/shopping/presentation/views/widgets/related_product_card.dart';
 import 'package:tree_clinic/features/shopping/presentation/views/widgets/section_title.dart';
@@ -32,8 +33,9 @@ class RelatedProductsSection extends StatelessWidget {
             children: [
               const SizedBox(height: 24),
 
-              SectionTitle(title: "Related Products"),
-
+SectionTitle(
+  title: context.tr("Related Products"),
+),
               const SizedBox(height: 12),
 
               SizedBox(

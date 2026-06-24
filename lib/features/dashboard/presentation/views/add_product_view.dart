@@ -5,6 +5,9 @@ import 'package:tree_clinic/core/catalog/tree_disease_catalog.dart';
 import 'package:tree_clinic/core/localization/localization_extensions.dart';
 import 'package:tree_clinic/core/widgets/custom_reactive_button2.dart';
 import 'package:tree_clinic/features/dashboard/presentation/manager/add_product_cubit/add_product_cubit.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/widgets/media_step.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/widgets/product_info_step.dart';
+import 'package:tree_clinic/features/dashboard/presentation/views/widgets/treatment_step.dart';
 import 'package:tree_clinic/features/shopping/data/model/product_model.dart';
 
 class AddProductView extends StatefulWidget {
@@ -21,8 +24,10 @@ class _AddProductViewState extends State<AddProductView> {
   final _treatmentFormKey = GlobalKey<FormState>();
   final _mediaFormKey = GlobalKey<FormState>();
 
-  final nameController = TextEditingController();
-  final descController = TextEditingController();
+  final nameEnController = TextEditingController();
+  final nameArController = TextEditingController();
+  final descEnController = TextEditingController();
+  final descArController = TextEditingController();
   final priceController = TextEditingController();
   final imageController = TextEditingController();
   final customTreeController = TextEditingController();
@@ -35,7 +40,8 @@ class _AddProductViewState extends State<AddProductView> {
   int currentStep = 0;
 
   bool get isEditing => widget.initialProduct != null;
-  bool get _isOtherTreeSelected => selectedTree == TreeDiseaseCatalog.otherOption;
+  bool get _isOtherTreeSelected =>
+      selectedTree == TreeDiseaseCatalog.otherOption;
   bool get _isOtherDiseaseSelected =>
       selectedDisease == TreeDiseaseCatalog.otherOption;
 
@@ -44,10 +50,8 @@ class _AddProductViewState extends State<AddProductView> {
     return selectedTree;
   }
 
-  List<String> get _treeOptions => [
-    ...TreeDiseaseCatalog.treeNames,
-    TreeDiseaseCatalog.otherOption,
-  ];
+  List<String> get _treeOptions =>
+      [...TreeDiseaseCatalog.treeNames, TreeDiseaseCatalog.otherOption];
 
   List<String> get _diseaseOptions {
     final knownTree = _selectedKnownTree;
@@ -59,9 +63,7 @@ class _AddProductViewState extends State<AddProductView> {
   }
 
   String get _resolvedTree {
-    if (_isOtherTreeSelected) {
-      return customTreeController.text.trim();
-    }
+    if (_isOtherTreeSelected) return customTreeController.text.trim();
     return selectedTree?.trim() ?? '';
   }
 
@@ -78,8 +80,10 @@ class _AddProductViewState extends State<AddProductView> {
     final product = widget.initialProduct;
     if (product == null) return;
 
-    nameController.text = product.name;
-    descController.text = product.description;
+    nameEnController.text = product.nameEn;
+    nameArController.text = product.nameAr;
+    descEnController.text = product.descriptionEn;
+    descArController.text = product.descriptionAr;
     priceController.text = product.price.toStringAsFixed(
       product.price.truncateToDouble() == product.price ? 0 : 2,
     );
@@ -95,7 +99,10 @@ class _AddProductViewState extends State<AddProductView> {
     if (savedTree.isNotEmpty && TreeDiseaseCatalog.containsTree(savedTree)) {
       selectedTree = TreeDiseaseCatalog.findTree(savedTree)?.treeName;
       if (selectedTree != null &&
-          TreeDiseaseCatalog.containsDiseaseForTree(selectedTree!, savedDisease)) {
+          TreeDiseaseCatalog.containsDiseaseForTree(
+            selectedTree!,
+            savedDisease,
+          )) {
         selectedDisease = TreeDiseaseCatalog.diseasesFor(
           selectedTree!,
         ).firstWhere(
@@ -116,8 +123,10 @@ class _AddProductViewState extends State<AddProductView> {
 
   @override
   void dispose() {
-    nameController.dispose();
-    descController.dispose();
+    nameEnController.dispose();
+    nameArController.dispose();
+    descEnController.dispose();
+    descArController.dispose();
     priceController.dispose();
     imageController.dispose();
     customTreeController.dispose();
@@ -132,10 +141,9 @@ class _AddProductViewState extends State<AddProductView> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) {
-        final messageKey =
-            isEditing
-                ? 'Update {name} as a {category} product?'
-                : 'Add {name} as a {category} product?';
+        final messageKey = isEditing
+            ? 'Update {name} as a {category} product?'
+            : 'Add {name} as a {category} product?';
 
         return AlertDialog(
           title: Text(context.tr('Confirm product')),
@@ -143,7 +151,9 @@ class _AddProductViewState extends State<AddProductView> {
             context.tr(
               messageKey,
               params: {
-                'name': nameController.text.trim(),
+                'name': nameEnController.text.trim().isNotEmpty
+                    ? nameEnController.text.trim()
+                    : nameArController.text.trim(),
                 'category': context.tr(selectedCategory),
               },
             ),
@@ -171,8 +181,10 @@ class _AddProductViewState extends State<AddProductView> {
       final product = widget.initialProduct!;
       context.read<AddProductCubit>().updateProduct(
         product.copyWith(
-          name: nameController.text.trim(),
-          description: descController.text.trim(),
+          nameEn: nameEnController.text.trim(),
+          nameAr: nameArController.text.trim(),
+          descriptionEn: descEnController.text.trim(),
+          descriptionAr: descArController.text.trim(),
           image: imageController.text.trim(),
           price: price,
           tree: _resolvedTree,
@@ -182,8 +194,10 @@ class _AddProductViewState extends State<AddProductView> {
       );
     } else {
       context.read<AddProductCubit>().addProduct(
-        name: nameController.text.trim(),
-        description: descController.text.trim(),
+        nameEn: nameEnController.text.trim(),
+        nameAr: nameArController.text.trim(),
+        descriptionEn: descEnController.text.trim(),
+        descriptionAr: descArController.text.trim(),
         image: imageController.text.trim(),
         price: price,
         tree: _resolvedTree,
@@ -281,17 +295,17 @@ class _AddProductViewState extends State<AddProductView> {
         listener: (context, state) {
           if (state is AddProductSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(_localizeStateMessage(context, state.message))),
+              SnackBar(
+                content: Text(_localizeStateMessage(context, state.message)),
+              ),
             );
             context.pop();
           }
-
           if (state is AddProductFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                  _localizeStateMessage(context, state.errMessage),
-                ),
+                content:
+                    Text(_localizeStateMessage(context, state.errMessage)),
                 backgroundColor: Colors.red,
               ),
             );
@@ -302,14 +316,13 @@ class _AddProductViewState extends State<AddProductView> {
 
           return Stepper(
             currentStep: currentStep,
-            onStepTapped:
-                isLoading
-                    ? null
-                    : (step) {
-                      if (step <= currentStep || _validateStep(currentStep)) {
-                        setState(() => currentStep = step);
-                      }
-                    },
+            onStepTapped: isLoading
+                ? null
+                : (step) {
+                    if (step <= currentStep || _validateStep(currentStep)) {
+                      setState(() => currentStep = step);
+                    }
+                  },
             controlsBuilder: (context, details) {
               return Padding(
                 padding: const EdgeInsets.only(top: 20),
@@ -340,413 +353,71 @@ class _AddProductViewState extends State<AddProductView> {
               Step(
                 title: Text(context.tr('Product')),
                 isActive: currentStep >= 0,
-                state: currentStep > 0 ? StepState.complete : StepState.indexed,
-                content: Form(
-                  key: _productFormKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      _Field(
-                        controller: nameController,
-                        label: context.tr('Product Name'),
-                        icon: Icons.inventory_2_outlined,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return context.tr('Product name is required');
-                          }
-                          if (value.trim().length < 3) {
-                            return context.tr('Use at least 3 characters');
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      _Field(
-                        controller: descController,
-                        label: context.tr('Description'),
-                        icon: Icons.description_outlined,
-                        maxLines: 3,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return context.tr('Description is required');
-                          }
-                          if (value.trim().length < 10) {
-                            return context.tr('Add a clearer description');
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
+                state:
+                    currentStep > 0 ? StepState.complete : StepState.indexed,
+                content: ProductInfoStep(
+                  formKey: _productFormKey,
+                  nameEnController: nameEnController,
+                  nameArController: nameArController,
+                  descEnController: descEnController,
+                  descArController: descArController,
                 ),
               ),
               Step(
                 title: Text(context.tr('Treatment')),
                 isActive: currentStep >= 1,
-                state: currentStep > 1 ? StepState.complete : StepState.indexed,
-                content: Form(
-                  key: _treatmentFormKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      _Field(
-                        controller: priceController,
-                        label: context.tr('Price'),
-                        icon: Icons.attach_money,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        validator: (value) {
-                          final price = double.tryParse(value?.trim() ?? '');
-                          if (price == null || price <= 0) {
-                            return context.tr('Enter a valid positive price');
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      DropdownButtonFormField<String>(
-                        initialValue: selectedCategory,
-                        decoration: InputDecoration(
-                          labelText: context.tr('Category'),
-                          prefixIcon: const Icon(Icons.category_outlined),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        items:
-                            categories
-                                .map(
-                                  (category) => DropdownMenuItem(
-                                    value: category,
-                                    child: Text(context.tr(category)),
-                                  ),
-                                )
-                                .toList(),
-                        onChanged:
-                            isLoading
-                                ? null
-                                : (value) {
-                                  if (value != null) {
-                                    setState(() => selectedCategory = value);
-                                  }
-                                },
-                      ),
-                      const SizedBox(height: 12),
-                      DropdownButtonFormField<String>(
-                        key: ValueKey(selectedTree),
-                        initialValue: selectedTree,
-                        decoration: InputDecoration(
-                          labelText: context.tr('Tree'),
-                          prefixIcon: const Icon(Icons.park_outlined),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        validator: (_) {
-                          if ((selectedTree ?? '').trim().isEmpty) {
-                            return context.tr('Select tree');
-                          }
-                          return null;
-                        },
-                        items:
-                            _treeOptions
-                                .map(
-                                  (tree) => DropdownMenuItem(
-                                    value: tree,
-                                    child: Text(context.tr(tree)),
-                                  ),
-                                )
-                                .toList(),
-                        onChanged: isLoading ? null : _onTreeChanged,
-                      ),
-                      if (_isOtherTreeSelected) ...[
-                        const SizedBox(height: 12),
-                        _Field(
-                          controller: customTreeController,
-                          label: context.tr('Enter a custom tree'),
-                          icon: Icons.forest_outlined,
-                          validator: (value) {
-                            final rawValue = value?.trim() ?? '';
-                            if (rawValue.isEmpty) {
-                              return context.tr('This field is required');
-                            }
-                            if (TreeDiseaseCatalog.containsTree(rawValue)) {
-                              return context.tr(
-                                'This tree already exists in the list. Please choose it from the list.',
-                              );
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                        _Field(
-                          controller: customDiseaseController,
-                          label: context.tr('Enter a custom disease'),
-                          icon: Icons.spa_outlined,
-                          validator: (value) {
-                            if ((value ?? '').trim().isEmpty) {
-                              return context.tr('Disease is required');
-                            }
-                            return null;
-                          },
-                        ),
-                      ] else if (_selectedKnownTree != null) ...[
-                        const SizedBox(height: 12),
-                        DropdownButtonFormField<String>(
-                          key: ValueKey('${selectedTree}_$selectedDisease'),
-                          initialValue: selectedDisease,
-                          decoration: InputDecoration(
-                            labelText: context.tr('Disease'),
-                            prefixIcon: const Icon(Icons.spa_outlined),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          validator: (_) {
-                            if ((selectedDisease ?? '').trim().isEmpty) {
-                              return context.tr('Select disease');
-                            }
-                            return null;
-                          },
-                          items:
-                              _diseaseOptions
-                                  .map(
-                                    (disease) => DropdownMenuItem(
-                                      value: disease,
-                                      child: Text(context.tr(disease)),
-                                    ),
-                                  )
-                                  .toList(),
-                          onChanged:
-                              isLoading
-                                  ? null
-                                  : (value) {
-                                    setState(() {
-                                      selectedDisease = value;
-                                      if (value != TreeDiseaseCatalog.otherOption) {
-                                        customDiseaseController.clear();
-                                      }
-                                    });
-                                  },
-                        ),
-                        if (_isOtherDiseaseSelected) ...[
-                          const SizedBox(height: 12),
-                          _Field(
-                            controller: customDiseaseController,
-                            label: context.tr('Enter a custom disease'),
-                            icon: Icons.edit_note_outlined,
-                            validator: (value) {
-                              if ((value ?? '').trim().isEmpty) {
-                                return context.tr('Disease is required');
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ],
-                    ],
-                  ),
+                state:
+                    currentStep > 1 ? StepState.complete : StepState.indexed,
+                content: TreatmentStep(
+                  formKey: _treatmentFormKey,
+                  priceController: priceController,
+                  customTreeController: customTreeController,
+                  customDiseaseController: customDiseaseController,
+                  categories: categories,
+                  selectedCategory: selectedCategory,
+                  selectedTree: selectedTree,
+                  selectedDisease: selectedDisease,
+                  treeOptions: _treeOptions,
+                  diseaseOptions: _diseaseOptions,
+                  isOtherTreeSelected: _isOtherTreeSelected,
+                  isOtherDiseaseSelected: _isOtherDiseaseSelected,
+                  selectedKnownTree: _selectedKnownTree,
+                  isLoading: isLoading,
+                  onCategoryChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedCategory = value);
+                    }
+                  },
+                  onTreeChanged: isLoading ? (_) {} : _onTreeChanged,
+                  onDiseaseChanged: (value) {
+                    setState(() {
+                      selectedDisease = value;
+                      if (value != TreeDiseaseCatalog.otherOption) {
+                        customDiseaseController.clear();
+                      }
+                    });
+                  },
                 ),
               ),
               Step(
                 title: Text(context.tr('Media')),
                 isActive: currentStep >= 2,
-                content: Form(
-                  key: _mediaFormKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _Field(
-                        controller: imageController,
-                        label: context.tr('Image URL (optional)'),
-                        icon: Icons.image_outlined,
-                        keyboardType: TextInputType.url,
-                        onChanged: (_) => setState(() {}),
-                        validator: (value) {
-                          final rawValue = value?.trim() ?? '';
-                          if (rawValue.isEmpty) return null;
-
-                          final uri = Uri.tryParse(rawValue);
-                          if (uri == null || uri.host.isEmpty) {
-                            return context.tr('Enter a valid image URL');
-                          }
-                          if (uri.scheme != 'http' && uri.scheme != 'https') {
-                            return context.tr(
-                              'Image URL must start with http or https',
-                            );
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      _ImagePreview(url: imageController.text.trim()),
-                      const SizedBox(height: 16),
-                      _SummaryRow(
-                        label: context.tr('Name'),
-                        value: nameController.text,
-                      ),
-                      _SummaryRow(
-                        label: context.tr('Category'),
-                        value: _displayValue(context, selectedCategory),
-                      ),
-                      _SummaryRow(
-                        label: context.tr('Tree'),
-                        value: _displayValue(context, _resolvedTree),
-                      ),
-                      _SummaryRow(
-                        label: context.tr('Disease'),
-                        value: _displayValue(context, _resolvedDisease),
-                      ),
-                      _SummaryRow(
-                        label: context.tr('Price'),
-                        value: priceController.text.trim().isEmpty
-                            ? '-'
-                            : '${priceController.text.trim()} ${context.tr('EGP')}',
-                      ),
-                    ],
-                  ),
+                content: MediaStep(
+                  formKey: _mediaFormKey,
+                  imageController: imageController,
+                  onImageChanged: () => setState(() {}),
+                  displayName: nameEnController.text.trim().isNotEmpty
+                      ? nameEnController.text.trim()
+                      : nameArController.text.trim(),
+                  displayCategory: _displayValue(context, selectedCategory),
+                  displayTree: _displayValue(context, _resolvedTree),
+                  displayDisease: _displayValue(context, _resolvedDisease),
+                  priceText: priceController.text.trim(),
                 ),
               ),
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class _Field extends StatelessWidget {
-  const _Field({
-    required this.controller,
-    required this.label,
-    required this.icon,
-    this.validator,
-    this.keyboardType,
-    this.maxLines = 1,
-    this.onChanged,
-  });
-
-  final TextEditingController controller;
-  final String label;
-  final IconData icon;
-  final String? Function(String?)? validator;
-  final TextInputType? keyboardType;
-  final int maxLines;
-  final ValueChanged<String>? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
-  }
-}
-
-class _ImagePreview extends StatelessWidget {
-  const _ImagePreview({required this.url});
-
-  final String url;
-
-  @override
-  Widget build(BuildContext context) {
-    if (url.isEmpty) {
-      return const _ImagePlaceholder();
-    }
-
-    final uri = Uri.tryParse(url);
-    final canPreview =
-        uri != null &&
-        uri.host.isNotEmpty &&
-        (uri.scheme == 'http' || uri.scheme == 'https');
-
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.green.withValues(alpha: 0.35)),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child:
-            canPreview
-                ? Image.network(
-                  url,
-                  fit: BoxFit.cover,
-                  errorBuilder:
-                      (_, __, ___) => Center(
-                        child: Text(context.tr('Image preview is not available')),
-                      ),
-                )
-                : const _ImagePlaceholder(),
-      ),
-    );
-  }
-}
-
-class _ImagePlaceholder extends StatelessWidget {
-  const _ImagePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.green.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.green.withValues(alpha: 0.25)),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.image_outlined, color: Colors.green, size: 36),
-              const SizedBox(height: 8),
-              Text(context.tr('No image URL selected')),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 84,
-            child: Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(child: Text(value.trim().isEmpty ? '-' : value.trim())),
-        ],
       ),
     );
   }

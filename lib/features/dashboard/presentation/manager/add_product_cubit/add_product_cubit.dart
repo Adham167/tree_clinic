@@ -13,8 +13,10 @@ class AddProductCubit extends Cubit<AddProductState> {
   String? _resolvedShopId;
 
   Future<void> addProduct({
-    required String name,
-    required String description,
+    required String nameAr,
+    required String nameEn,
+    required String descriptionAr,
+    required String descriptionEn,
     required String image,
     required double price,
     required String tree,
@@ -36,15 +38,14 @@ class AddProductCubit extends Cubit<AddProductState> {
       shopId = _resolvedShopId;
     } else {
       final shopResult = await _shopRepo.getMyShop(currentUser.uid);
-
       var shouldContinue = true;
+
       shopResult.fold(
         (failure) {
           shouldContinue = false;
           emit(
             AddProductFailure(
-              errMessage:
-                  "Could not load your shop: ${failure.toString()}",
+              errMessage: "Could not load your shop: ${failure.toString()}",
             ),
           );
         },
@@ -69,8 +70,10 @@ class AddProductCubit extends Cubit<AddProductState> {
     final product = ProductModel(
       id: '',
       shopId: shopId!,
-      name: name.trim(),
-      description: description.trim(),
+      nameAr: nameAr.trim(),
+      nameEn: nameEn.trim(),
+      descriptionAr: descriptionAr.trim(),
+      descriptionEn: descriptionEn.trim(),
       image: image.trim(),
       price: price,
       tree: tree.trim(),
@@ -88,21 +91,21 @@ class AddProductCubit extends Cubit<AddProductState> {
 
   Future<void> updateProduct(ProductModel product) async {
     emit(AddProductLoading());
-
     final result = await _shopRepo.updateProduct(product);
     result.fold(
       (failure) => emit(AddProductFailure(errMessage: failure.toString())),
-      (_) => emit(AddProductSuccess(message: "Product updated successfully.")),
+      (_) =>
+          emit(AddProductSuccess(message: "Product updated successfully.")),
     );
   }
 
   Future<void> deleteProduct(String productId) async {
     emit(AddProductLoading());
-
     final result = await _shopRepo.deleteProduct(productId);
     result.fold(
       (failure) => emit(AddProductFailure(errMessage: failure.toString())),
-      (_) => emit(AddProductSuccess(message: "Product deleted successfully.")),
+      (_) =>
+          emit(AddProductSuccess(message: "Product deleted successfully.")),
     );
   }
 }

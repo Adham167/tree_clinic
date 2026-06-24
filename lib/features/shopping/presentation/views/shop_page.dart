@@ -22,16 +22,12 @@ class _ShopPageState extends State<ShopPage> {
   @override
   void initState() {
     super.initState();
-
     if (widget.initialSearch != null) {
       searchController.text = widget.initialSearch!;
     }
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-
       context.read<GetProductsCubit>().fetchAllProducts();
-
       if (widget.initialSearch != null) {
         setState(() {});
       }
@@ -71,14 +67,11 @@ class _ShopPageState extends State<ShopPage> {
               decoration: InputDecoration(
                 hintText: context.tr('Search treatments...'),
                 prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
               ),
               onChanged: (_) => setState(() {}),
             ),
           ),
-
           SizedBox(
             height: 50,
             child: ListView(
@@ -91,71 +84,64 @@ class _ShopPageState extends State<ShopPage> {
               ],
             ),
           ),
-
           const SizedBox(height: 10),
-
           Expanded(
             child: BlocBuilder<GetProductsCubit, GetProductsState>(
               builder: (context, state) {
                 if (state is GetProductsLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
                 if (state is GetProductsFailure) {
                   return Center(child: Text(state.errMessage));
                 }
-
                 if (state is GetProductsSuccess) {
                   var products = state.products;
 
                   if (selectedCategory != 'All') {
-                    products =
-                        products
-                            .where(
-                              (product) => product.category == selectedCategory,
-                            )
-                            .toList();
+                    products = products
+                        .where((product) => product.category == selectedCategory)
+                        .toList();
                   }
 
                   if (searchController.text.isNotEmpty) {
-                    final keywords =
-                        searchController.text
-                            .toLowerCase()
-                            .split(RegExp(r'\s+'))
-                            .where((e) => e.isNotEmpty)
-                            .toList();
-                    products =
-                        products.where((product) {
-                          final searchableText =
-                              [
-                                product.name,
-                                product.tree,
-                                product.disease,
-                                product.category,
-                              ].join(' ').toLowerCase();
+                    final keywords = searchController.text
+                        .toLowerCase()
+                        .split(RegExp(r'\s+'))
+                        .where((e) => e.isNotEmpty)
+                        .toList();
 
-                          return keywords.any(
-                            (word) => searchableText.contains(word),
-                          );
-                        }).toList();
+                    products = products.where((product) {
+                      // Search across both languages plus tree/disease/category
+                      // so results show up regardless of the app's current
+                      // language or which language the merchant filled in.
+                      final searchableText = [
+                        product.nameAr,
+                        product.nameEn,
+                        product.descriptionAr,
+                        product.descriptionEn,
+                        product.tree,
+                        product.disease,
+                        product.category,
+                      ].join(' ').toLowerCase();
+
+                      return keywords.any((word) => searchableText.contains(word));
+                    }).toList();
                   }
 
                   return GridView.builder(
                     padding: const EdgeInsets.all(12),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 0.72,
-                        ),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.72,
+                    ),
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       return ProductCard(product: products[index]);
                     },
                   );
                 }
-
                 return const SizedBox();
               },
             ),

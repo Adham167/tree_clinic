@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tree_clinic/app/router/app_router.dart';
 import 'package:tree_clinic/core/constants/app_colors.dart';
 import 'package:tree_clinic/core/constants/app_styles.dart';
+import 'package:tree_clinic/core/constants/assets.dart';
 import 'package:tree_clinic/presentation/manager/get_started_cubit/get_started_cubit.dart';
 
 class SplashView extends StatelessWidget {
@@ -14,7 +15,7 @@ class SplashView extends StatelessWidget {
     return BlocProvider(
       create: (context) => GetStartedCubit()..getStarted(),
       child: Scaffold(
-        backgroundColor: AppColors.kPrimaryColor,
+        backgroundColor: AppColors.kmainColor,
         body: BlocListener<GetStartedCubit, GetStartedState>(
           listener: (context, state) {
             if (state is UnAuthenticated) {
@@ -35,16 +36,16 @@ class SplashView extends StatelessWidget {
             },
             child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Spacer(),
-                  SizedBox(
-                    width: 300,
-                    child: Text(
-                      'Enjoy your life with plants',
-                      style: AppStyles.styleBold36,
-                      textAlign: TextAlign.center,
-                    ),
+                  Image.asset(Assets.imagesLogo, height: 120, width: 120),
+                  SizedBox(height: 8),
+                  Text(
+                    'Enjoy your life with plants',
+                    style: AppStyles.styleBold36,
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),

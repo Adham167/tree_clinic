@@ -20,14 +20,26 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final displayName = product.localizedName(languageCode);
+    final displayDescription = product.localizedDescription(languageCode);
     final treeLabel = _displayLabel(context, product.tree);
     final diseaseLabel = _displayLabel(context, product.disease);
+    debugPrint('====================');
+debugPrint('LANGUAGE = $languageCode');
+debugPrint('AR NAME = ${product.nameAr}');
+debugPrint('EN NAME = ${product.nameEn}');
+debugPrint('AR DESC = ${product.descriptionAr}');
+debugPrint('EN DESC = ${product.descriptionEn}');
+debugPrint('DISPLAY NAME = ${product.localizedName(languageCode)}');
+debugPrint(
+  'DISPLAY DESC = ${product.localizedDescription(languageCode)}',
+);
+debugPrint('====================');
 
     return GestureDetector(
       onTap: () {
-        GoRouter.of(
-          context,
-        ).push(AppRouter.kProductDetailsView, extra: product);
+        GoRouter.of(context).push(AppRouter.kProductDetailsView, extra: product);
       },
       child: Card(
         elevation: 3,
@@ -37,25 +49,21 @@ class ProductCard extends StatelessWidget {
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(16),
-                ),
-                child:
-                    product.image.trim().isEmpty
-                        ? const _ProductImageFallback()
-                        : Image.network(
-                          product.image,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (_, __, ___) => const _ProductImageFallback(),
-                        ),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                child: product.image.trim().isEmpty
+                    ? const _ProductImageFallback()
+                    : Image.network(
+                        product.image,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => const _ProductImageFallback(),
+                      ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
               child: Text(
-                product.name,
+                displayName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -68,8 +76,7 @@ class ProductCard extends StatelessWidget {
                   spacing: 6,
                   runSpacing: 6,
                   children: [
-                    if (treeLabel.isNotEmpty)
-                      _ProductInfoChip(label: treeLabel),
+                    if (treeLabel.isNotEmpty) _ProductInfoChip(label: treeLabel),
                     if (diseaseLabel.isNotEmpty)
                       _ProductInfoChip(label: diseaseLabel),
                   ],
@@ -78,7 +85,7 @@ class ProductCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 6, 8, 0),
               child: Text(
-                product.description,
+                displayDescription,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -105,7 +112,7 @@ class ProductCard extends StatelessWidget {
                     onPressed: () {
                       final cartItem = CartItem(
                         id: product.id,
-                        name: product.name,
+                        name: displayName,
                         price: product.price,
                         image: product.image,
                         shopId: product.shopId,
