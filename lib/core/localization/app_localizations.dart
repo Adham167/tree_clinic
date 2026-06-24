@@ -24,6 +24,7 @@ class AppLocalizations {
 
   static const Map<String, Map<String, String>> _localizedValues = {
     'ar': {
+      "Search treatments in shop":"البحث عن العلاج في المتجر",
       "Product Info": "معلومات المنتج",
       "Created At": "تاريخ الإضافة",
       'Add': 'إضافة',

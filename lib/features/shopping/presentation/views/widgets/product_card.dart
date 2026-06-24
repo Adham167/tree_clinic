@@ -25,21 +25,12 @@ class ProductCard extends StatelessWidget {
     final displayDescription = product.localizedDescription(languageCode);
     final treeLabel = _displayLabel(context, product.tree);
     final diseaseLabel = _displayLabel(context, product.disease);
-    debugPrint('====================');
-debugPrint('LANGUAGE = $languageCode');
-debugPrint('AR NAME = ${product.nameAr}');
-debugPrint('EN NAME = ${product.nameEn}');
-debugPrint('AR DESC = ${product.descriptionAr}');
-debugPrint('EN DESC = ${product.descriptionEn}');
-debugPrint('DISPLAY NAME = ${product.localizedName(languageCode)}');
-debugPrint(
-  'DISPLAY DESC = ${product.localizedDescription(languageCode)}',
-);
-debugPrint('====================');
 
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(AppRouter.kProductDetailsView, extra: product);
+        GoRouter.of(
+          context,
+        ).push(AppRouter.kProductDetailsView, extra: product);
       },
       child: Card(
         elevation: 3,
@@ -49,15 +40,19 @@ debugPrint('====================');
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                child: product.image.trim().isEmpty
-                    ? const _ProductImageFallback()
-                    : Image.network(
-                        product.image,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const _ProductImageFallback(),
-                      ),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
+                child:
+                    product.image.trim().isEmpty
+                        ? const _ProductImageFallback()
+                        : Image.network(
+                          product.image,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (_, __, ___) => const _ProductImageFallback(),
+                        ),
               ),
             ),
             Padding(
@@ -76,7 +71,8 @@ debugPrint('====================');
                   spacing: 6,
                   runSpacing: 6,
                   children: [
-                    if (treeLabel.isNotEmpty) _ProductInfoChip(label: treeLabel),
+                    if (treeLabel.isNotEmpty)
+                      _ProductInfoChip(label: treeLabel),
                     if (diseaseLabel.isNotEmpty)
                       _ProductInfoChip(label: diseaseLabel),
                   ],
