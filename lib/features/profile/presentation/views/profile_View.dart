@@ -11,10 +11,7 @@ class ProfileView extends StatelessWidget {
       appBar: AppBar(
         title: Text(context.tr('Profile')),
         backgroundColor: Colors.green,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
+        
       ),
       body: const UserInfoBlocBuilder(),
     );

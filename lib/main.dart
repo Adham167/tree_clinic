@@ -30,10 +30,10 @@ Future<void> main() async {
   Bloc.observer = CustomBlocObserver();
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => TreeClinic(preferences: preferences, initialLocale: initialLocale),
-    ),
-    // TreeClinic(preferences: preferences, initialLocale: initialLocale),
+    // DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (context) => TreeClinic(preferences: preferences, initialLocale: initialLocale),
+    // ),
+    TreeClinic(preferences: preferences, initialLocale: initialLocale),
   );
 }

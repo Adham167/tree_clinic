@@ -41,7 +41,7 @@ class TreeClinic extends StatelessWidget {
           return MaterialApp.router(
             useInheritedMediaQuery: true,
             locale: locale,
-            builder: DevicePreview.appBuilder,
+            // builder: DevicePreview.appBuilder,
             theme: LightTheme.theme,
             debugShowCheckedModeBanner: false,
             supportedLocales: AppLocalizations.supportedLocales,
