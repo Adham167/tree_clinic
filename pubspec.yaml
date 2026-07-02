@@ -39,6 +39,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_launcher_icons: ^0.14.4
   get_it: ^9.0.5
   go_router: ^16.2.5
   google_sign_in: ^7.2.0
@@ -88,3 +89,9 @@ flutter_assets:
   output_path: lib/core/constants/
   filename: assets.dart
   field_prefix: null
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/Logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
