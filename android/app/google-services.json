@@ -12,7 +12,28 @@
           "package_name": "com.example.tree_clinic"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1054021400249-6m21pvbib1krnrj204u0blm8tu9qnb1m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tree_clinic",
+            "certificate_hash": "dd3b15eba4b1e11fd58a429a344bc5ce3c499b5e"
+          }
+        },
+        {
+          "client_id": "1054021400249-8e1soep5h7sl62dhfh2mgn5o07ofln3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tree_clinic",
+            "certificate_hash": "ed9a0546fe8c73471fe40cc4dfd5b804b47a1688"
+          }
+        },
+        {
+          "client_id": "1054021400249-mto63rdcour1fpc390sive66enlfhmvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC6ZiR8QMDjHoaCgVSdsi_oLCIR9pbL3uk"
@@ -20,7 +41,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1054021400249-mto63rdcour1fpc390sive66enlfhmvu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1054021400249-bi9e3nlehddk2jhojjmijq7hof1u6guj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.treeClinic"
+              }
+            }
+          ]
         }
       }
     }
